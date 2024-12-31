@@ -1,0 +1,154 @@
+@use "../../../../assets/styles/helpers/index" as *;
+
+.header {
+  padding-block: fluid(40, 20);
+  background-color: var(--color-bg-main);
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1rem;
+  }
+
+  &__overlay {
+    display: contents;
+    font-size: rem(16);
+
+    @include mobile {
+      z-index: 999;
+      font-size: rem(22);
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+      row-gap: 3rem;
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.31);
+      backdrop-filter: blur(6px);
+
+      &:not(.is-active) {
+        @include hide;
+        translate: 100%;
+      }
+
+    }
+
+
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    max-width: 85%;
+    flex-grow: 1;
+    justify-content: space-between;
+    font-weight: 500;
+    color: var(--color-text-base);
+    @include tablet {
+      display: contents;
+    }
+
+    &-list {
+      display: flex;
+      column-gap: rem(30);
+      @include mobile {
+        flex-direction: column;
+        row-gap: 1rem;
+      }
+    }
+
+    &-item {
+      text-align: center;
+    }
+
+    &-link {
+      white-space: nowrap;
+      color: currentColor;
+
+      @include flex-center(true);
+      @include hover-menu-link();
+
+      &.is-active {
+        color: var(--color-title-second);
+      }
+
+      @include mobile {
+        padding: rem(10) rem(18);
+      }
+
+    }
+
+    &-phone {
+      margin-inline: auto 10%;
+      white-space: nowrap;
+      color: var(--color-title-second);
+      transition: color var(--transition-base-time) ease-in-out;
+      @keyframes phone-animate {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-20%);
+        }
+      }
+      &:hover {
+        animation: phone-animate 700ms infinite alternate ease-in-out;
+        color: green;
+      }
+
+      @include tablet {
+        display: none;
+      }
+      @include mobile {
+        display: block;
+        padding: rem(10) rem(18);
+        margin: 0;
+      }
+
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      column-gap: rem(9);
+
+      &__image {
+        @include square(rem(24));
+      }
+
+      &__text {
+        color: currentColor;
+        transition: color var(--hover-transition) ease-in-out;
+      }
+
+      &:hover {
+        .profile__image {
+          animation: profile-animate 700ms infinite alternate ease-in-out;
+        }
+        .profile__text {
+          color: var(--color-title-second);
+        }
+      }
+
+      @keyframes profile-animate {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.1);
+        }
+      }
+
+      @include mobile {
+        padding: rem(10) rem(18);
+      }
+
+    }
+
+  }
+
+}

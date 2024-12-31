@@ -1,0 +1,30 @@
+@use "helpers/index" as *;
+:root {
+  --font-family-base: 'Montserrat', sans-serif;
+  --font-family-title: 'Lora', sans-serif;
+
+  --color-bg-main: #FFFFFF;
+  --color-bg-second: #B9D5FD;
+
+  --color-text-base: #071739;
+  --color-text-extra: #1E1A2B;
+
+  --color-title-first: #FFFFFF;
+  --color-title-second: #709FDC;
+
+  --color-bg-button: #709FDC;
+  --color-bg-button-hover: #071739;
+  --transition-base-time: 300ms;
+
+  --container-width: #{rem(1240)};
+  --container-padding-x: #{rem(12)};
+
+
+  --head-foot-padding-y-max: 40;
+  --head-foot-padding-y-min: 20;
+
+  --border-input-base: #{rem(1.5)} solid currentColor;
+
+  --border-rad-image-base: #{rem(5)};
+
+}

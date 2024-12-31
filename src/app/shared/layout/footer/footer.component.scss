@@ -1,0 +1,110 @@
+@use "../../../../assets/styles/helpers/index" as *;
+
+.footer {
+  padding-block: fluid(40, 20);
+  background-color: var(--color-bg-second);
+
+  &__inner {
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .footer__menu {
+    display: flex;
+    max-width: rem(505);
+    justify-content: space-between;
+    column-gap: 1rem;
+    align-items: center;
+    margin-bottom: rem(40);
+
+    .footer__logo {
+      flex-shrink: 0;
+    }
+
+    &-list {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 130%;
+      color: var(--color-text-base);
+      display: flex;
+      flex-wrap: wrap;
+      gap: rem(20);
+
+      @include mobile-s {
+        justify-content: center;
+      }
+
+    }
+
+    &-link {
+      @include hover-menu-link();
+      white-space: nowrap;
+    }
+  }
+
+  &__contacts {
+    max-width: rem(916);
+    display: flex;
+    flex-wrap: wrap;
+    gap: fluid(60, 30);
+
+    @include mobile {
+      max-width: rem(500);
+    }
+    @include mobile-s {
+      justify-content: space-between;
+    }
+
+    &-item {
+      max-width: rem(253);
+      display: flex;
+      flex-direction: column;
+      row-gap: rem(10);
+
+      @include mobile-s {
+        &:first-child {
+          max-width: 100%;
+        }
+        &:last-child {
+          margin-inline: auto;
+          align-items: center;
+        }
+      }
+
+
+      &-title {
+        align-self: start;
+        text-align: center;
+        font-weight: 500;
+        font-size: rem(16);
+        color: var(--color-title-second);
+      }
+
+      &-text {
+        font-size: rem(16);
+        line-height: 130%;
+      }
+
+      &-link {
+        font-size: rem(14);
+      }
+
+      &-social {
+        display: flex;
+        align-items: center;
+        &-icon {
+          padding: rem(6);
+        }
+      }
+
+    }
+  }
+
+  &__rights {
+    margin-top: rem(6);
+  }
+
+}

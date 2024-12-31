@@ -1,0 +1,120 @@
+@use 'sass:math';
+@use 'functions' as *;
+
+@mixin fluid-text($max: 18, $min: 14) {
+  font-size: fluid($max, $min);
+}
+
+@mixin hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@mixin show {
+  opacity: 1;
+  visibility: visible;
+}
+
+@mixin flex-center($isInline: false) {
+  @if $isInline {
+    display: inline-flex;
+  } @else  {
+    display: flex;
+  }
+
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin abs-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+@mixin abs-x {
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+}
+
+@mixin abs-y {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  clip-path: inset(100%) !important;
+  clip: rect(0 0 0 0) !important;
+  overflow: hidden !important;
+}
+
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+
+@mixin input-style() {
+  font-size: rem(14);
+  line-height: 130%;
+  color: var(--color-title-second);
+  padding: rem(18) rem(20);
+  border: var(--border-input-base);
+  border-radius: rem(3);
+}
+
+@mixin title-style($max: 38, $min: 24, $fw: 400, $lh: 130%) {
+  font-family: var(--font-family-title);
+  font-weight: $fw;
+  font-size: fluid($max, $min);
+  line-height: $lh;
+}
+
+@mixin text-style($max: 16, $min: 14, $fw: 400, $lh: 130%) {
+  font-family: var(--font-family-base);
+  font-weight: $fw;
+  font-size: fluid($max, $min);
+  line-height: $lh;
+}
+
+@mixin hover-menu-link() {
+  position: relative;
+  &::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: rem(2);
+    position: absolute;
+    left: 0;
+    bottom: -15%;
+    background-color: var(--color-title-second);
+    transform: scaleX(0);
+    opacity: 0;
+    transition: all 300ms ease-in-out;
+  }
+  &:hover::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@mixin image-common-style() {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--border-radius);
+}
+
+
+

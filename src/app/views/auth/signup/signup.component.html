@@ -1,0 +1,48 @@
+<section class="auth">
+  <div class="auth__inner container">
+
+    <section class="auth-info">
+      <h3 class="auth-info__title">Регистрация на сайте</h3>
+      <div class="auth__form">
+
+        <label class="auth__form-label">
+
+          <input class="auth__form-input" type="text" placeholder="Ваше имя">
+
+        </label>
+
+        <label class="auth__form-label">
+
+          <input class="auth__form-input" type="email" placeholder="Электронная почта">
+
+        </label>
+
+        <label class="auth__form-label">
+
+          <input class="auth__form-input" type="password" placeholder="Пароль">
+
+        </label>
+
+        <label class="auth__form-checkbox-label">
+          <input class="auth__form-checkbox-input" type="checkbox" formControlName="rememberMe">
+          <span>
+            Я принимаю <a class="auth-info__link" routerLink="">условия пользовательского соглашения</a>
+            и&nbsp;даю <a class="auth-info__link" routerLink="">согласие на обработку персональных данных.</a>
+          </span>
+        </label>
+
+        <button (click)="signup()" type="button" class="auth-info__button button">Зарегистрироваться</button>
+
+      </div>
+      <p class="auth-info__text">
+        Уже есть аккаунт?
+        <a routerLink="/login" class="auth-info__link">Войдите</a>
+      </p>
+    </section>
+
+    <div class="auth__image">
+      <img class="auth__image-img" src="./assets/images/auth-views/signup-image.png" alt=" ">
+    </div>
+
+  </div>
+</section>

@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+@use "assets/styles/reset";
+@use "assets/styles/fonts";
+@use "assets/styles/variables";
+@use "assets/styles/utils";
+@use "assets/styles/global";
+

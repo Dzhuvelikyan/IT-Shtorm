@@ -1,0 +1,25 @@
+*{padding: 0;margin: 0;border: 0; cursor: default;}
+html,:has(:target) {scroll-behavior: smooth;}/**Плавный скролл*/
+html{height:100%;font-size:16px;}//scrollbar-gutter: stable;
+body{min-height:100%;line-height:1.5;}
+*,*:before,*:after{box-sizing: border-box;}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+nav,footer,header,aside{display: block;}
+input,button,textarea{font-family:inherit;}
+input::-ms-clear{display: none;}
+button,label{cursor: pointer; background-color: transparent}
+button::-moz-focus-inner{padding:0;border:0;}
+a{text-decoration: none; cursor: pointer; color: currentColor;}
+ul li{list-style: none;}
+img, video{max-width: 100%;display: block;height: auto;}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
+select {-webkit-appearance: none;-moz-appearance: none;appearance: none;}
+select::-ms-expand {display: none;}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {-webkit-appearance: none;}
+input[type='number'], input[type="number"]:hover, input[type="number"]:focus {appearance: none;-moz-appearance: textfield;}
+svg * {transition-property: fill, stroke;}/**Чиним баг задержки смены цвета при взаимодействии с svg-элементами*/
+svg,button>*,a>*{pointer-events: none;}
+input,textarea,select,button,a{font: inherit;}/**Наследуем свойства шрифт для полей ввода и ссылки*/
+address{font-style: normal;}
