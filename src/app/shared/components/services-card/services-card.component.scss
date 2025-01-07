@@ -1,0 +1,48 @@
+@use '../../../../assets/styles/helpers/index' as *;
+
+.card {
+  width: rem(291);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: rem(15);
+  &__img {
+    @include image-common-style();
+    @include square(rem(291));
+  }
+
+  &__text {
+    &-title {
+      margin-bottom: rem(10);
+      font-weight: 500;
+      font-size: rem(20);
+      line-height: 130%;
+      color: var(--color-title-second);
+    }
+    &-description {
+      font-weight: 400;
+      font-size: rem(14);
+      line-height: 130%;
+    }
+  }
+
+  &__action {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 10px;
+
+    .card__price {
+      white-space: nowrap;
+      font-weight: 600;
+      font-size: rem(20);
+      line-height: 130%;
+      color: var(--color-title-second);
+    }
+    .card__button {
+
+    }
+  }
+
+}

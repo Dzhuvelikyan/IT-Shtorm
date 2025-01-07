@@ -9,7 +9,7 @@
   --color-text-base: #071739;
   --color-text-extra: #1E1A2B;
 
-  --color-title-first: #FFFFFF;
+  --color-banner-text: #FFFFFF;
   --color-title-second: #709FDC;
 
   --color-bg-button: #709FDC;
@@ -23,7 +23,7 @@
   --head-foot-padding-y-max: 40;
   --head-foot-padding-y-min: 20;
 
-  --border-input-base: #{rem(1.5)} solid currentColor;
+  --border-input-base: #{rem(1.5)} solid var(--color-title-second);
 
   --border-rad-image-base: #{rem(5)};
 

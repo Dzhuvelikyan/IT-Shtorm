@@ -1,8 +1,13 @@
 @use "../../../../assets/styles/helpers/index" as *;
 
 .footer {
+  margin-top: fluid(120, 60);
   padding-block: fluid(40, 20);
   background-color: var(--color-bg-second);
+
+  @include mobile {
+    margin-top: 0;
+  }
 
   &__inner {
     @include mobile {
@@ -26,7 +31,7 @@
 
     &-list {
       font-weight: 400;
-      font-size: 16px;
+      font-size: rem(16);
       line-height: 130%;
       color: var(--color-text-base);
       display: flex;

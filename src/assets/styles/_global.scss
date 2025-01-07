@@ -14,6 +14,7 @@ html {
 }
 
 body {
+  @include custom-scrollbar();
   background-color: var(--color-bg-main);
   font-family: var(--font-family-base);
   font-weight: 400;
@@ -39,18 +40,21 @@ input {
 
 .logo {
   display: block;
-  width: rem(85);
+  svg {
+    width: rem(85);
+    height: rem(47);
+  }
 }
 
 .button {
   display: block;
   background-color: var(--color-bg-button);
-  padding: rem(15) rem(40);
+  padding: rem(15) rem(33);
   width: auto;
   font-weight: 400;
-  font-size: 16px;
+  font-size: rem(16);
   line-height: 1;
-  color: var(--color-title-first);
+  color: var(--color-bg-main);
   text-align: center;
   white-space: nowrap;
   border-radius: rem(5);
@@ -113,4 +117,38 @@ input {
   }
 }
 
+.offers{
+  &__title {
+    @include title-style();
+    color: var(--color-title-second);
+    margin-bottom: rem(40);
+  }
+  &__list {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: rem(45) rem(24);
+  }
+}
+
+//переопределение стилей для owl-carousel(banner-carousel)
+.owl-theme .owl-nav.disabled + .owl-dots {//пагинация
+  pointer-events: none;
+  margin: 0;
+  position: absolute;
+  bottom: 2%;
+  left: 0;
+  width: 100%;
+}
+.owl-theme .owl-dots .owl-dot {//точки
+  pointer-events: auto;
+  span {
+    cursor: inherit;
+    background: transparent;
+    border: 1px solid var(--color-bg-main);
+  }
+  &.active span {
+    background: var(--color-bg-main);
+  }
+}
 

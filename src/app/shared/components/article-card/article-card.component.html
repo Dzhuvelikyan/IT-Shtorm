@@ -1,0 +1,22 @@
+<div class="card">
+
+  <img class="card__img" src="{{pathToImage + article.image}}" alt="{{article.title}}">
+
+  <div class="card__category">{{ article.category }}</div>
+
+  <article class="card__text">
+
+    <h3 class="card__text-title">{{ article.title }}</h3>
+
+    <p class="card__text-description">{{ article.description }}</p>
+
+  </article>
+
+  <a class="card__link"
+     [routerLink]="'/articles/' + article.url"
+     title="Оформить данную услугу"
+     aria-label="Оформить данную услугу">
+    Читать дальше
+  </a>
+
+</div>

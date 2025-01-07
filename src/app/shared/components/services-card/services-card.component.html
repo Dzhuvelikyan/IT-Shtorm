@@ -1,0 +1,26 @@
+<div class="card">
+
+  <img class="card__img" src="{{pathWithImage + service.image}}" alt="{{service.title}}">
+
+  <article class="card__text">
+
+    <h3 class="card__text-title">{{service.title}}</h3>
+
+    <p class="card__text-description">{{service.description}}</p>
+
+  </article>
+
+  <div class="card__action">
+
+    <span class="card__price"> От {{service.price}}₽</span>
+
+    <a class="card__button button"
+       routerLink=""
+       title="Оформить данную услугу"
+       aria-label="Оформить данную услугу">
+      Подроднее
+    </a>
+
+  </div>
+
+</div>

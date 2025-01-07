@@ -113,8 +113,20 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-rad-image-base);
+  background-color: var(--color-bg-second);
 }
 
-
-
+@mixin custom-scrollbar() {
+  &::-webkit-scrollbar {
+    width: rem(5);
+    background: transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background-image:-webkit-linear-gradient(180deg, rgba(255, 0, 0, 0) 40%, var(--color-title-second) 50%, rgba(255, 0, 0, 0) 60%);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background-color: var(--color-title-second);
+  }
+}

@@ -1,0 +1,67 @@
+@use '../../../../assets/styles/helpers/index' as *;
+
+.card {
+  position: relative;
+  width: rem(291);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: rem(15);
+  &__img {
+    @include image-common-style();
+    @include square(rem(291));
+  }
+
+  &__category {
+    position: absolute;
+    right: rem(10);
+    top: rem(10);
+    font-size: rem(11);
+    color: var(--color-title-second);
+    background-color: var(--color-bg-main);
+    border-radius: rem(5);
+    padding: 0.72em 1.29em;
+  }
+
+  &__text {
+    &-title {
+      margin-bottom: rem(20);
+      font-weight: 500;
+      font-size: rem(20);
+      line-height: 130%;
+      color: var(--color-title-second);
+    }
+    &-description {
+      font-weight: 400;
+      font-size: rem(14);
+      line-height: 130%;
+      margin-bottom: rem(5);
+    }
+  }
+
+  &__link {
+    position: relative;
+    display: block;
+    align-self: start;
+    margin-top: auto;
+    font-size: rem(16);
+    line-height: 1;
+    color: var(--color-title-second);
+    border-bottom: 1px solid currentColor;
+    transition: all var(--transition-base-time) ease;
+
+    @include hover() {
+      font-weight: 500;
+      letter-spacing: 0.1em;
+    };
+
+    &::after {
+      display: block;
+      content: "";
+      @include abs-center();
+      width: 110%;
+      height: 3em;
+    }
+  }
+
+}

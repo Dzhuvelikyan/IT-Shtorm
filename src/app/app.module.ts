@@ -6,7 +6,8 @@ import {LayoutComponent} from "./shared/layout/layout.component";
 import {SharedModule} from "./shared/shared.module";
 import {HeaderComponent} from './shared/layout/header/header.component';
 import {FooterComponent} from './shared/layout/footer/footer.component';
-
+import {MainComponent} from './views/main/main.component';
+import {CarouselModule} from "ngx-owl-carousel-o";
 
 @NgModule({
   declarations: [
@@ -14,11 +15,14 @@ import {FooterComponent} from './shared/layout/footer/footer.component';
     LayoutComponent,
     HeaderComponent,
     FooterComponent,
+    MainComponent,
+
   ],
   imports: [
     BrowserModule,
     SharedModule,
     AppRoutingModule,
+    CarouselModule,
   ],
   providers: [// Здесь можно указать глобальные сервисы
 
