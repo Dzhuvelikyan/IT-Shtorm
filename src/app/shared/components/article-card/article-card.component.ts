@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ArticleType} from '../../../../types/article.type';
+import {ArticleType} from '../../../../types/article/article.type';
 import {environment} from '../../../../environments/environment';
 
 @Component({
@@ -12,7 +12,11 @@ export class ArticleCardComponent {
 
   protected readonly environment = environment;
 
-  pathToImage: string = this.environment.staticImgPath + "articles/";
+  //путь для запроса картинок(frontend)
+  pathToImage: string = this.environment.staticImgPath + this.environment.apiPath.articles + "/";
+
+  //путь для запроса статей(backend)
+  articleApiPath = environment.apiPath.articles + '/';
 
   @Input() article: ArticleType;
 

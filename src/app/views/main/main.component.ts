@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ServicesService} from '../../shared/services/services.service';
 import {ServiceType} from '../../../types/service.type';
 import {ArticleService} from '../../shared/services/article.service';
-import {ArticleType} from '../../../types/article.type';
+import {ArticleType} from '../../../types/article/article.type';
 import {DefaultResponseType} from '../../../types/default-response.type';
 import {ReviewType} from '../../../types/review.type';
 import {ReviewsService} from '../../shared/services/review.service';
@@ -21,6 +21,7 @@ export class MainComponent implements OnInit {
 
   services: ServiceType[] = [];
 
+  //популярные статьи
   articles: ArticleType[] = [];
 
   reviews: ReviewType[] = [];

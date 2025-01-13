@@ -3,17 +3,33 @@
 
     <section class="auth-info">
       <h3 class="auth-info__title">Войти в личный кабинет</h3>
-      <div class="auth__form">
+      <div class="auth__form" [formGroup]="loginForm">
 
         <label class="auth__form-label">
 
-          <input class="auth__form-input" type="email" placeholder="Электронная почта">
+          <input class="auth__form-input" type="email" placeholder="Электронная почта" formControlName="email"
+                 [class.invalid]="(loginForm.get('email')?.invalid &&
+               (loginForm.get('email')?.dirty || loginForm.get('email')?.touched))">
+
+          <div class="auth__form-error-text" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email обязателен.</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Введите корректный email.</span>
+          </div>
 
         </label>
 
         <label class="auth__form-label">
 
-          <input class="auth__form-input" type="password" placeholder="Пароль">
+          <input class="auth__form-input" type="password" placeholder="Пароль" formControlName="password"
+                 [class.invalid]="(loginForm.get('password')?.invalid &&
+               (loginForm.get('password')?.dirty || loginForm.get('password')?.touched))">
+
+          <div class="auth__form-error-text"
+               *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Пароль обязателен.</span>
+
+          </div>
 
         </label>
 
@@ -22,7 +38,11 @@
           <span>Запомнить меня</span>
         </label>
 
-        <button (click)="login()" type="button" class="auth-info__button button">Войти</button>
+        <button type="button" class="auth-info__button button"
+                (click)="login()"
+                [disabled]="loginForm.invalid">
+          Войти
+        </button>
 
       </div>
       <p class="auth-info__text">
@@ -37,31 +57,3 @@
 
   </div>
 </section>
-
-
-<!--<article class="auth-form" [formGroup]="loginForm">-->
-<!--  <h3 class="auth-form__title second-title">Войти в личный кабинет</h3>-->
-<!--  <div class="auth-form__group">-->
-<!--    <label class="base-input">-->
-
-<!--      <input class="base-input__input" type="email" placeholder="Электронная почта" formControlName="email"-->
-<!--             [ngStyle]="{'border-color': (loginForm.get('email')?.invalid &&-->
-<!--        (loginForm.get('email')?.dirty || loginForm.get('email')?.touched))? 'red': ''}">-->
-
-<!--    </label>-->
-<!--    <label class="base-input">-->
-
-<!--      <input class="base-input__input" type="password" placeholder="Пароль" formControlName="password"-->
-<!--             [ngStyle]="{'border-color': (loginForm.get('password')?.invalid &&-->
-<!--        (loginForm.get('password')?.dirty || loginForm.get('password')?.touched))? 'red': ''}">-->
-
-<!--    </label>-->
-<!--    <label class="auth-form__checkbox">-->
-
-<!--      <input class="auth-form__checkbox-checkbox" type="checkbox" formControlName="rememberMe">-->
-
-<!--      <span>Запомнить меня</span>-->
-<!--    </label>-->
-<!--  </div>-->
-
-<!--</article>-->

@@ -1,0 +1,161 @@
+@use "../../../../assets/styles/helpers/index" as *;
+
+.articles {
+  padding-block: fluid(80, 40) fluid(120, 60);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    row-gap: rem(40);
+  }
+
+  &__title {
+    @include title-style();
+    color: var(--color-title-second);
+  }
+
+  .filter {
+    display: flex;
+    justify-content: space-between;
+    column-gap: rem(40);
+
+    @include mobile {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      row-gap: rem(20);
+    }
+
+    &__applied {
+      flex: 1 0 rem(300);
+      display: flex;
+      flex-wrap: wrap;
+      gap: rem(15);
+      justify-content: start;
+
+      &-item {
+
+        --applied-filter-color: var(--color-title-second);
+
+        font-size: fluid(16, 14);
+        color: var(--applied-filter-color);
+        height: 2.4em;
+        display: flex;
+        align-items: center;
+        column-gap: rem(8);
+        padding-inline: 1.2em;
+        border: rem(1.5) solid currentColor;
+        border-radius: 0.35em;
+        transition: color var(--transition-base-time) ease-in-out,
+                    border-color var(--transition-base-time) ease-in-out;
+
+        svg{
+          flex-shrink: 0;
+          width: 1em;
+          transition: rotate var(--transition-base-time) ease-in-out;
+
+          line {
+            stroke: currentColor;
+          }
+
+        }
+
+        @include hover {
+          --applied-filter-color: orangered;
+          svg {
+            rotate: 180deg;
+          }
+        }
+
+      }
+    }
+
+    //тут select-filter
+
+  }
+
+  &__list {
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: rem(40) rem(24);
+
+    @include mobile {
+      @include custom-scrollbar(90deg);
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: 1.3rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    &-item {
+      scroll-snap-align: center;
+    }
+  }
+
+  .page-counter {
+    font-size: rem(20);
+    display: inline-flex;
+    align-items: center;
+    margin: rem(20) auto 0;
+    column-gap: rem(10);
+
+    //отступ дочерних элементов(кнопок)
+    $paddingDotElements: 0.5em 1em;
+
+    &__button {
+      padding: $paddingDotElements;
+      transition: scale var(--transition-base-time) ease-in-out;
+      @include hover() {
+        scale: 2;
+      }
+
+      svg {
+        width: rem(12);
+
+        path {
+          stroke: var(--color-title-second);
+        }
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        scale: 1;
+
+        svg {
+          path {
+            stroke: gray;
+          }
+        }
+      }
+
+    }
+
+    &__pages {
+      display: flex;
+
+      &-number {
+        line-height: 1;
+        padding: $paddingDotElements;
+        transition: scale var(--transition-base-time) ease-in-out;
+
+        @include hover() {
+          //hover применится для остояния не активных страниц
+          &:not(.is-active) {
+            scale: 1.2;
+          }
+        }
+
+        //остояние активной страницы
+        &.is-active {
+          pointer-events: none;
+          scale: 1.2;
+          color: var(--color-title-second);
+        }
+      }
+    }
+
+  }
+
+}

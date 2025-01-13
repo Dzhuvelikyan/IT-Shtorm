@@ -3,35 +3,76 @@
 
     <section class="auth-info">
       <h3 class="auth-info__title">Регистрация на сайте</h3>
-      <div class="auth__form">
+      <div class="auth__form" [formGroup]="signupForm">
 
         <label class="auth__form-label">
 
-          <input class="auth__form-input" type="text" placeholder="Ваше имя">
+          <input class="auth__form-input" type="text" placeholder="Ваше имя"
+                 formControlName="name"
+                 [class.invalid]="(signupForm.get('name')?.invalid &&
+               (signupForm.get('name')?.dirty || signupForm.get('name')?.touched))">
+
+          <div class="auth__form-error-text" *ngIf="signupForm.get('name')?.touched && signupForm.get('name')?.invalid">
+            <span *ngIf="signupForm.get('name')?.errors?.['required']">Имя обязательно.</span>
+            <span *ngIf="signupForm.get('name')?.errors?.['pattern']">
+              Имя должно содержать русские буквы, каждое слово с заглавной буквы.
+            </span>
+          </div>
 
         </label>
 
         <label class="auth__form-label">
 
-          <input class="auth__form-input" type="email" placeholder="Электронная почта">
+          <input class="auth__form-input" type="email" placeholder="Электронная почта"
+                 formControlName="email"
+                 [class.invalid]="(signupForm.get('email')?.invalid &&
+               (signupForm.get('email')?.dirty || signupForm.get('email')?.touched))">
+
+          <div class="auth__form-error-text" *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid">
+            <span *ngIf="signupForm.get('email')?.errors?.['required']">Email обязателен.</span>
+            <span *ngIf="signupForm.get('email')?.errors?.['email']">Введите корректный email.</span>
+          </div>
 
         </label>
 
         <label class="auth__form-label">
 
-          <input class="auth__form-input" type="password" placeholder="Пароль">
+          <input class="auth__form-input" type="password" placeholder="Пароль"
+                 formControlName="password"
+                 [class.invalid]="(signupForm.get('password')?.invalid &&
+               (signupForm.get('password')?.dirty || signupForm.get('password')?.touched))">
+
+          <div class="auth__form-error-text"
+               *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid">
+
+            <span *ngIf="signupForm.get('password')?.errors?.['required']">Пароль обязателен.</span>
+
+            <span *ngIf="signupForm.get('password')?.errors?.['minlength']">
+              Пароль должен быть не менее 8 символов.
+            </span>
+
+            <span *ngIf="signupForm.get('password')?.errors?.['pattern']">
+              Пароль должен содержать хотя бы одну заглавную букву и одну цифру.
+            </span>
+
+          </div>
 
         </label>
 
         <label class="auth__form-checkbox-label">
-          <input class="auth__form-checkbox-input" type="checkbox" formControlName="rememberMe">
+          <input class="auth__form-checkbox-input" type="checkbox"
+                 formControlName="agree">
           <span>
             Я принимаю <a class="auth-info__link" routerLink="">условия пользовательского соглашения</a>
             и&nbsp;даю <a class="auth-info__link" routerLink="">согласие на обработку персональных данных.</a>
           </span>
         </label>
 
-        <button (click)="signup()" type="button" class="auth-info__button button">Зарегистрироваться</button>
+        <button type="button" class="auth-info__button button"
+                (click)="signup()"
+                [disabled]="signupForm.invalid">
+          Зарегистрироваться
+        </button>
 
       </div>
       <p class="auth-info__text">

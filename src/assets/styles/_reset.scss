@@ -11,8 +11,8 @@ input::-ms-clear{display: none;}
 button,label{cursor: pointer; background-color: transparent}
 button::-moz-focus-inner{padding:0;border:0;}
 a{text-decoration: none; cursor: pointer; color: currentColor;}
-ul li{list-style: none;}
-img, video{max-width: 100%;display: block;height: auto;}
+ul li {list-style: none;}
+img, video{max-width: 100%;display: block;height: auto; user-select: none}
 h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
 select {-webkit-appearance: none;-moz-appearance: none;appearance: none;}
 select::-ms-expand {display: none;}

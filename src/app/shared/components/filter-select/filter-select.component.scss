@@ -1,0 +1,130 @@
+@use "../../../../assets/styles/helpers/index" as *;
+
+.filter-select {
+  --filter-content-width: #{rem(257)};
+  --filter-padding-x: #{rem(23)};
+  --transition-filter-time: 400ms;
+  --filter-border-rad: #{rem(5)};
+  --button-border-color: var(--color-bg-second);
+
+  position: relative;
+  z-index: 10;
+  width: rem(257);
+  font-size: rem(16);
+  transition: width var(--transition-base-time) ease;
+
+  &__button {
+    max-width: var(--filter-content-width);
+    width: 100%;
+    margin-left: auto;
+    padding: rem(12) var(--filter-padding-x);
+    border-radius: var(--filter-border-rad) var(--filter-border-rad) 0 0;
+    background-color: var(--color-bg-second);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: rem(14);
+
+    transition: max-width var(--transition-filter-time) ease-in-out,
+    padding-inline var(--transition-filter-time) ease-in-out,
+    background-color var(--transition-filter-time) ease-in-out;
+
+    svg {
+      width: rem(16);
+      transition: all var(--transition-filter-time);
+    }
+
+  }
+
+  &__list {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--color-bg-main);
+    padding: rem(5) var(--filter-padding-x);
+    border: rem(1.5) solid var(--button-border-color);
+    border-radius: 0 0 var(--filter-border-rad) var(--filter-border-rad);
+    max-width: var(--filter-content-width);
+    width: 100%;
+    max-height: rem(300);
+    overflow: hidden;
+    transition: all var(--transition-filter-time) ease-in-out;
+
+    //категория фильтра
+    .filter-select__item {
+      width: 100%;
+      padding-block: rem(12);
+      color: #bebebe;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color var(--transition-filter-time) ease-in-out;
+
+      &-status {
+        position: relative;
+        background-color: currentColor;
+        width: rem(10);
+        height: rem(1.5);
+        transition: rotate var(--transition-filter-time) ease-in-out;
+
+        &::after {
+          content: '';
+          display: block;
+          position: absolute;
+          background-color: inherit;
+          inset: 0;
+          rotate: 90deg;
+        }
+      }
+
+      &:hover {
+        color: var(--color-text-base);
+        text-shadow: 0 0 0.1em var(--color-title-second);
+        .filter-select__item-status {
+          box-shadow: 0 0 0.4em 0 var(--color-title-second);
+        }
+
+      }
+
+      //активная категория фильтра
+      &.is-active {
+        color: var(--color-text-base);
+
+        .filter-select__item-status {
+          rotate: 180deg;
+
+          &::after {
+            rotate: 0deg;
+          }
+        }
+      }
+
+    }
+
+  }
+
+  //если фильтр закрыт (состояние hover реализовано для закрытого фильтра)
+  &:not(.is-active) {
+    --filter-content-width: #{rem(150)};
+    --filter-padding-x: 0;
+
+    .filter-select__button {
+      background-color: transparent;
+      border-radius: var(--filter-border-rad);
+
+      @include hover() {
+        --filter-padding-x: #{rem(23)};
+        background-color: var(--color-bg-second);
+      }
+    }
+
+    .filter-select__list {
+      pointer-events: none;
+      border: none;
+      opacity: 0;
+      max-height: 0;
+      overflow: auto;
+    }
+  }
+
+}

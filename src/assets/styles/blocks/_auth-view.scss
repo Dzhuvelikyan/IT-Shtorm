@@ -40,6 +40,10 @@
       &-input {
         width: 100%;
         @include input-style();
+        transition: border-color var(--transition-base-time) ease-in-out;
+        &.invalid {
+        border-color: var(--color-danger);
+        }
       }
 
       &-checkbox-label {
@@ -75,8 +79,13 @@
         }
       }
 
-    }
+      &-error-text {
+        padding-inline: rem(3);
+        font-size: rem(12);
+        color: var(--color-danger);
+      }
 
+    }
 
     &__text {
       margin-top: rem(6);
@@ -90,6 +99,10 @@
       line-height: 130%;
       color: var(--color-title-second);
       @include hover-menu-link();
+    }
+
+    &__button {
+
     }
 
   }

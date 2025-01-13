@@ -20,27 +20,6 @@ export class BannerCarouselComponent {
     responsive: {
       0: {
         items: 1,
-      },
-      330: {
-        items: 1
-      },
-      425: {
-        items: 1
-      },
-      500: {
-        items: 1
-      },
-      768: {
-        items: 1
-      },
-      1024: {
-        items: 1
-      },
-      1600: {
-        items: 1
-      },
-      1920: {
-        items: 1
       }
     },
     navText: ['', ''],

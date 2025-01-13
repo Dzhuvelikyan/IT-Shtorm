@@ -1,9 +1,17 @@
 export const environment = {
   production: false,
-  api: "http://localhost:3000/api/",
+  api: "http://localhost:3000/api",
 
-  //путь до картинок на backend
-  staticImgPath: "assets/images/",
+  apiPath: {
+    users: "/users",
+    categories: "/categories",
+    articles: "/articles",
+    relatedArticles: "/articles/related",//путь для получения связанных статей с открытой статьей
+    comments: "/comments",
+  },
+
+  //путь до картинок
+  staticImgPath: "assets/images",
 
   phone: "+74993431334",
   email: "info@itstorm.com",

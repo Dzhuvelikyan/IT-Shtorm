@@ -1,15 +1,24 @@
 @use '../../../../assets/styles/helpers/index' as *;
 
 .card {
+  $cardWidth: rem(291);
   position: relative;
   width: rem(291);
   height: 100%;
   display: flex;
   flex-direction: column;
   row-gap: rem(15);
+
+  @include mobile {
+    $cardWidth: rem(300);
+  }
+
   &__img {
     @include image-common-style();
-    @include square(rem(291));
+    @include square($cardWidth);
+    @include mobile {
+      height: rem(200);
+    }
   }
 
   &__category {

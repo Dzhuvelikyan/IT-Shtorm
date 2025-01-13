@@ -1,0 +1,50 @@
+<section class="comments">
+
+  <p class="comments__title">
+    <ng-template [ngIf]=comments.allCount>Комментарии к статье</ng-template>
+    <ng-template [ngIf]=!comments.allCount>Комментариев пока нет</ng-template>
+
+    <ng-template [ngIf]=!authService.getLoggedIn()>
+      <p class="comments__title-sub-title">Чтобы оставлять комментарии,
+        <a routerLink="/login">войдите</a> или
+        <a routerLink="/signup">зарегистрируйтесь</a>.
+      </p>
+    </ng-template>
+
+  </p>
+
+  <p *ngIf=!comments.allCount>Будьте первым, кто оставит свой комментарий к статье!</p>
+
+  <div class="comments__form"
+       *ngIf=authService.getLoggedIn()
+       [formGroup]=commentForm>
+    <textarea class="comments__form-textarea"
+              type="text"
+              cols="50" rows="15"
+              placeholder="Напишите Ваш комментарий к статье..."
+              formControlName="text">
+    </textarea>
+
+    <button class="comments__form-button button" type="button"
+            (click)="createComment()"
+            [disabled]="commentForm.invalid">
+      Опубликовать комментарий
+    </button>
+
+
+  </div>
+
+  <!-- блок с полученными комментариями -->
+  <ul *ngIf="comments.comments && comments.comments.length > 0" class="comments__list">
+
+    <li *ngFor="let comment of comments.comments" class="comments__list-item">
+      <app-comment-card [comment]="comment"></app-comment-card>
+    </li>
+
+    <li class="comments__list-button">
+      <button type="button">Загрузить ещё комментарии</button>
+    </li>
+  </ul>
+
+
+</section>

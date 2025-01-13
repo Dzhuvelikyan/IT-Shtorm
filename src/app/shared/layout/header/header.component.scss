@@ -1,7 +1,6 @@
 @use "../../../../assets/styles/helpers/index" as *;
 
 .header {
-  padding-block: fluid(40, 20);
   background-color: var(--color-bg-main);
 
   &__inner {
@@ -29,14 +28,15 @@
       padding: 1rem;
       background-color: rgba(255, 255, 255, 0.31);
       backdrop-filter: blur(6px);
+      opacity: 1;
+      transition: opacity, translate, var(--transition-base-time) ease-in-out;
 
       &:not(.is-active) {
-        @include hide;
+        opacity: 0;
         translate: 100%;
       }
 
     }
-
 
   }
 
@@ -73,6 +73,7 @@
       @include hover-menu-link();
 
       &.is-active {
+        pointer-events: none;
         color: var(--color-title-second);
       }
 
@@ -111,44 +112,50 @@
 
     }
 
-    .profile {
-      display: flex;
-      align-items: center;
-      column-gap: rem(9);
+  }
 
-      &__image {
-        @include square(rem(24));
-      }
+  .burger-button {
+    @include square(rem(44));
+    position: relative;
+    z-index: 1000;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: rem(8.5) rem(4.25);
+    color: var(--color-title-second);
+    background-color: transparent;
+    border: none;
 
-      &__text {
-        color: currentColor;
-        transition: color var(--hover-transition) ease-in-out;
-      }
-
-      &:hover {
-        .profile__image {
-          animation: profile-animate 700ms infinite alternate ease-in-out;
+    &.is-active {
+      .burger-button__line {
+        &:first-child {
+          rotate: 45deg;
+          transform-origin: 0;
+          translate: 0.3em 0;
         }
-        .profile__text {
-          color: var(--color-title-second);
+
+        &:nth-child(2) {
+          rotate: -45deg;
+        }
+
+        &:last-child {
+          width: 0;
         }
       }
-
-      @keyframes profile-animate {
-        0% {
-          transform: scale(1);
-        }
-        100% {
-          transform: scale(1.1);
-        }
-      }
-
-      @include mobile {
-        padding: rem(10) rem(18);
-      }
-
     }
 
+    &__line {
+      width: 100%;
+      height: rem(2);
+      background-color: currentColor;
+      border-radius: 1rem;
+      transition-duration: var(--transition-base-time);
+
+      &:last-child {
+        align-self: end;
+        width: 55%;
+      }
+    }
   }
 
 }

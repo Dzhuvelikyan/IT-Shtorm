@@ -1,0 +1,56 @@
+@use "../../../../assets/styles/helpers/index" as *;
+
+.card {
+
+  &__user {
+    font-weight: 600;
+    display: flex;
+    column-gap: rem(26);
+    &-avatar {
+      @include square(rem(60));
+      border-radius: 50%;
+      border: rem(2) solid var(--color-title-second);
+      background-color: var(--color-bg-second);
+    }
+
+    &-name {
+      font-size: rem(18);
+      color: var(--color-title-second);
+      margin-bottom: rem(10);
+    }
+
+    &-date {
+      font-size: rem(14);
+      color: var(--light-gray-color);
+    }
+
+  }
+
+  &__text {
+    margin-block: rem(15) rem(39);
+    line-height: 140%;
+  }
+
+  &__actions {
+    display: flex;
+    column-gap: rem(15);
+    &-item {
+      display: flex;
+      column-gap: rem(3);
+      align-items: center;
+      &-counter {
+        font-size: rem(14);
+        font-weight: 600;
+      }
+
+      &-icon {
+        @include square(rem(24));
+      }
+
+    }
+
+  }
+
+}
+
+

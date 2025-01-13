@@ -1,10 +1,16 @@
 @use "../../../assets/styles/helpers/index" as *;
 
 .main {
+  padding-bottom: var(--space-between-blocks);
+
+  @include mobile {
+    padding-bottom: 0;
+  }
+
   &__inner {
     display: flex;
     flex-direction: column;
-    row-gap: fluid(120, 60);
+    row-gap: var(--space-between-blocks);
   }
 
   .banner {
@@ -105,6 +111,7 @@
       }
 
       &__number {
+        user-select: none;
         display: block;
         flex-shrink: 0;
         width: rem(40);

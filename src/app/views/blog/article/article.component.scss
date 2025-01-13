@@ -1,0 +1,188 @@
+@use "../../../../assets/styles/helpers/index" as *;
+
+.article {
+  padding-block: var(--view-padding-y);
+
+  &__inner {
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-auto-rows: min-content;
+    column-gap: fluid(60, 50);
+    justify-content: space-between;
+    grid-template-areas:
+            "head head head"
+            "body body rela"
+            "comm comm rela"
+            ".... .... rela";
+
+    @include mobile() {
+      //display: flex;
+      //flex-direction: column;
+      //column-gap: 0;
+      grid-template-columns: minmax(0, 1fr);
+      column-gap: 0;
+      justify-content: start;
+      grid-template-areas:
+            "head"
+            "body"
+            "comm"
+            "rela";
+    }
+
+  }
+
+  .article__head {
+    grid-area: head;
+
+    .crumbs {
+      user-select: none;
+      grid-area: crum;
+      font-weight: 500;
+      font-size: rem(16);
+      margin-bottom: fluid(60, 45);
+
+      @include mobile() {
+        margin-bottom: rem(5);
+      }
+
+      &__link {
+
+        color: var(--color-bg-second);
+
+        &::after{
+          content: "/";
+          display: inline-block;
+          margin-inline: 0.5em;
+          color: currentColor;
+        }
+      }
+      &__default {
+        color: var(--color-title-second);
+      }
+    }
+
+    .article-main {
+      display: flex;
+      justify-content: space-between;
+      column-gap: rem(60);
+      overflow: hidden;
+      margin-bottom: rem(60);
+
+      @include mobile() {
+        padding: rem(60) rem(30);
+        margin-bottom: rem(10);
+        position: relative;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: var(--border-rad-image-base);
+      }
+      @include mobile-s() {
+        padding: rem(40) rem(20);
+      }
+
+      &__info {
+        max-width: rem(607);
+        color: var(--color-title-second);
+        @include mobile() {
+          color: var(--color-bg-second);
+          text-shadow: 0 0 0.05em white;
+          max-width: 100%;
+        }
+      }
+
+      &__title {
+        @include title-style();
+        margin-bottom: fluid(40, 20);
+        text-wrap: balance;
+      }
+
+      &__text {
+        font-size: fluid(20, 18);
+        font-weight: 500;
+        hyphens: auto;
+      }
+
+      &__image {
+        max-width: rem(527);
+        min-width: rem(450);
+        width: 100%;
+        aspect-ratio: 1 / 0.61;
+        border-radius: var(--border-rad-image-base);
+        overflow: hidden;
+
+        @include  tablet() {
+          min-width: rem(350);
+        }
+        @include mobile() {
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          max-width: 100%;
+          height: 100%;
+          min-width: 0;
+        }
+
+        img {
+          @include  image-common-style();
+        }
+      }
+
+    }
+
+  }
+
+  .backend-content {
+    //описано в глобальном файле
+  }
+
+  &__related {
+    grid-area: rela;
+    padding-block: var(--space-between-blocks);
+    @include mobile() {
+      padding-block: rem(60);
+    }
+
+    &-title {
+      @include title-style(26, 24);
+      color: var(--color-title-second);
+      margin-bottom: rem(20);
+    }
+
+    &-articles {
+      overflow: hidden;
+      @include  flex-direction-column-gap(60);
+      @include mobile() {
+        @include custom-scrollbar(90deg);
+        gap: rem(20);
+        flex-direction: row;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 1.3rem;
+        scroll-snap-type: x mandatory;
+        & > * {
+          scroll-snap-align: center;
+        }
+      }
+    }
+
+  }
+
+  &__comments {
+    margin-top: rem(60);
+    grid-area: comm;
+    max-width: rem(850);
+    width: 100%;
+
+    .shared-social {
+      font-weight: 500;
+      color: var(--color-title-second);
+      margin-bottom: rem(60);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: rem(15);
+    }
+
+  }
+
+}

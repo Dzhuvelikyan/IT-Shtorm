@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {StateClasses} from '../../../../enum/state-classes.enum';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +8,29 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  @ViewChild('burgerButton', {static: true}) burgerButton!: ElementRef;
+  @ViewChild('headerOverlay', {static: true}) headerOverlay!: ElementRef;
+
+  //CSS классы которые будем добавлять по ситуации
+  stateClasses = StateClasses;
+
+  constructor() {}
+
+
+  //открытие, закрытие бургер меню(мобильное меню)
+  public onBurgerButtonClick(): void {
+    this.burgerButton.nativeElement.classList.toggle(this.stateClasses.isActive);
+    this.headerOverlay.nativeElement.classList.toggle(this.stateClasses.isActive);
+    document.documentElement.classList.toggle(this.stateClasses.isLock);
+  }
+
+  public closeBurgerMenu(event: MouseEvent): void {
+
+    const target = event.target as HTMLElement;
+
+    if (target.hasAttribute("data-menu-link")) {
+      this.onBurgerButtonClick();
+    }
+  }
 
 }

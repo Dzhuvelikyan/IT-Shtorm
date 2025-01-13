@@ -1,0 +1,76 @@
+@use "../../../../assets/styles/helpers/index" as *;
+
+.profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  column-gap: rem(9);
+
+  &__image {
+    @include square(rem(24));
+  }
+
+  &__text {
+    color: currentColor;
+    transition: color var(--hover-transition) ease-in-out;
+  }
+
+  &:hover {
+    .profile__image {
+      animation: profile-animate 700ms infinite alternate ease-in-out;
+    }
+
+    .profile__text {
+      color: var(--color-title-second);
+    }
+  }
+
+  &:has(.profile-menu.is-active) {
+    .profile__image {
+      animation-play-state: paused;
+    }
+    .profile__text {
+      color: var(--color-title-second);
+    }
+  }
+
+  @keyframes profile-animate {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  @include mobile {
+    padding: rem(10) rem(18);
+  }
+
+}
+
+.profile-menu {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 160%;
+  background-color: var(--color-bg-main);
+  border: rem(2) solid var(--color-title-second);
+  border-radius: rem(5);
+  transition: translate var(--transition-base-time) ease-in-out,
+  opacity var(--transition-base-time) ease-in-out;
+
+  &__item {
+    padding: rem(5) rem(15);
+    width: 100%;
+    pointer-events: auto;
+  }
+
+  &:not(.is-active) {
+    @include visually-hidden();
+    translate: 0 -30%;
+    opacity: 0;
+  }
+
+}
+

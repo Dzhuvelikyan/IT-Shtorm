@@ -1,9 +1,37 @@
+@use "../../../assets/styles/helpers/index" as *;
 .layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding-block: fluid(40, 20);
+    background-color: var(--color-bg-main);
+
+    animation-name: scrolling-header;
+    animation-fill-mode: both;//остановка анимации в конце
+    animation-timeline: scroll();//новое свойство: анимация сработает при скролле
+    animation-range: 1vh 50vh; //указания диапазона анимации от первого значения до второго тень будет появлятся постепенно
+
+    //анимация тени для липкого хедера, плавно появлятся от 1vh до 100vh
+    @keyframes scrolling-header {
+      to {
+        box-shadow: var(--box-shadow-header-footer);
+        padding-block: rem(20);
+      }
+    }
+
+  }
+
   &__body {
     flex: 1;
   }
+
+  &__footer {
+    box-shadow: var(--box-shadow-header-footer);
+  }
+
 }

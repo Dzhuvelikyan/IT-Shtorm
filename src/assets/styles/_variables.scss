@@ -3,6 +3,8 @@
   --font-family-base: 'Montserrat', sans-serif;
   --font-family-title: 'Lora', sans-serif;
 
+  --box-shadow-header-footer: 0 0 1rem 0 var(--color-bg-second);
+
   --color-bg-main: #FFFFFF;
   --color-bg-second: #B9D5FD;
 
@@ -11,13 +13,21 @@
 
   --color-banner-text: #FFFFFF;
   --color-title-second: #709FDC;
+  --light-gray-color: #BEBEBE;
 
   --color-bg-button: #709FDC;
   --color-bg-button-hover: #071739;
+
+  --color-danger: orangered;
+
   --transition-base-time: 300ms;
 
   --container-width: #{rem(1240)};
   --container-padding-x: #{rem(12)};
+
+  --view-padding-y: #{fluid(80, 60) fluid(120, 60)};
+
+  --space-between-blocks: #{fluid(120, 60)};//отступ между блоками
 
 
   --head-foot-padding-y-max: 40;

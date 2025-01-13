@@ -79,7 +79,7 @@
       </div>
     </section>
 
-    <section id="articles" *ngIf="articles && articles.length > 0" class="popular-articles">
+    <section *ngIf="articles && articles.length > 0" class="popular-articles">
       <div class="popular-articles__inner container">
 
         <section aria-labelledby="popular-articles" class="offers">
@@ -95,7 +95,7 @@
         </section>
 
         <div class="popular-articles__blog">
-          <a class="popular-articles__blog-link" routerLink="">
+          <a routerLink="/articles" class="popular-articles__blog-link">
             Перейти в блог
             <svg class="popular-articles__blog-link-arrow-svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
                  xmlns="http://www.w3.org/2000/svg">

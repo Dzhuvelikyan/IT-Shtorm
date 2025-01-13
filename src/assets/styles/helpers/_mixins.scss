@@ -63,7 +63,6 @@
   height: $size;
 }
 
-
 @mixin input-style() {
   font-size: rem(14);
   line-height: 130%;
@@ -74,6 +73,7 @@
 }
 
 @mixin title-style($max: 38, $min: 24, $fw: 400, $lh: 130%) {
+  user-select: none;
   font-family: var(--font-family-title);
   font-weight: $fw;
   font-size: fluid($max, $min);
@@ -117,16 +117,22 @@
   background-color: var(--color-bg-second);
 }
 
-@mixin custom-scrollbar() {
+@mixin custom-scrollbar($deg: 180deg) {
   &::-webkit-scrollbar {
     width: rem(5);
     background: transparent;
   }
   &::-webkit-scrollbar-track {
-    background-image:-webkit-linear-gradient(180deg, rgba(255, 0, 0, 0) 40%, var(--color-title-second) 50%, rgba(255, 0, 0, 0) 60%);
+    background-image:-webkit-linear-gradient($deg, rgba(255, 0, 0, 0) 40%, var(--color-title-second) 50%, rgba(255, 0, 0, 0) 60%);
   }
   &::-webkit-scrollbar-thumb {
-    border-radius: 20px;
+    border-radius: rem(20);
     background-color: var(--color-title-second);
   }
 }
+
+@mixin flex-direction-column-gap($size: 20) {
+  display: flex;
+  flex-direction: column;
+  gap: rem($size);
+};

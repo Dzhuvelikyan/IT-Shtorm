@@ -1,0 +1,77 @@
+<section class="articles" aria-labelledby="articles-title">
+  <div class="articles__inner container">
+
+    <h2 id="articles-title" class="articles__title">Блог</h2>
+
+    <div class="filter" aria-label="Фильтр статей блога">
+
+      <div class="filter__applied">
+        <button type="button" class="filter__applied-item"
+                title="Удалить категорю {{ filter | convertingFilterNames }} из фильтра"
+                *ngFor="let filter of activeQueryParams.categories"
+                @scaleAnimation
+                (click)="removeAppliedFilter(filter)">
+
+          {{ filter | convertingFilterNames }}
+
+          <svg width="100%" height="100%" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_15190_586)">
+              <line x1="1.93553" y1="3.15002" x2="13.9563" y2="15.1708" stroke="#709FDC" stroke-linecap="round"/>
+              <line x1="13.9236" y1="3.12984" x2="1.90278" y2="15.1507" stroke="#709FDC" stroke-linecap="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_15190_586">
+                <rect width="16" height="16" fill="white" transform="translate(0 0.5)"/>
+              </clipPath>
+            </defs>
+          </svg>
+
+        </button>
+
+      </div>
+
+      <app-filter-select></app-filter-select>
+
+    </div>
+
+    <ul *ngIf="packArticles && packArticles.items && packArticles.items.length > 0" class="articles__list" aria-label="Статьи блога">
+      <li class="articles__list-item" *ngFor="let article of packArticles.items">
+        <app-article-card [article]="article"></app-article-card>
+      </li>
+    </ul>
+
+    <div class="page-counter" aria-label="Постраничная навигация" *ngIf="pages && pages.length > 1">
+
+      <button type="button" class="page-counter__button" title="Предыдущая страница" aria-label="Предыдущая страница"
+              (click)="openPrevPage()"
+              [disabled]="activeQueryParams.page? activeQueryParams.page === 1: true">
+        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+          <path
+            d="m17.267,23.888L6.439,13.061c-.283-.283-.439-.66-.439-1.061s.156-.777.439-1.061L17.267.112l.707.707L7.146,11.646c-.094.095-.146.22-.146.354s.052.259.146.354l10.827,10.827-.707.707Z"/>
+        </svg>
+      </button>
+
+      <div class="page-counter__pages">
+
+        <button type="button" class="page-counter__pages-number" [title]="'Страница: ' + page"
+                *ngFor="let page of pages"
+                (click)="openPage(page)"
+                [class.is-active]="activeQueryParams.page ? activeQueryParams.page === page : page === 1">
+          {{ page }}
+        </button>
+
+      </div>
+
+      <button type="button" class="page-counter__button" title="Следующая страница" aria-label="Следующая страница"
+              (click)="openNextPage()"
+              [disabled]="activeQueryParams.page? activeQueryParams.page === pages.length: false">
+        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+          <path
+            d="m6.733,23.888l-.707-.707,10.827-10.827c.095-.095.146-.22.146-.354s-.052-.259-.146-.354L6.026.819l.707-.707,10.827,10.827c.283.283.439.66.439,1.061s-.156.777-.439,1.061l-10.827,10.827Z"/>
+        </svg>
+      </button>
+
+    </div>
+
+  </div>
+</section>
