@@ -14,12 +14,13 @@
 
     <span class="card__price"> От {{service.price}}₽</span>
 
-    <a class="card__button button"
+    <button type="button" class="card__button button"
+       (click)="openDialog()"
        routerLink=""
        title="Оформить данную услугу"
        aria-label="Оформить данную услугу">
       Подроднее
-    </a>
+    </button>
 
   </div>
 

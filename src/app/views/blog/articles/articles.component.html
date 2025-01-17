@@ -3,7 +3,8 @@
 
     <h2 id="articles-title" class="articles__title">Блог</h2>
 
-    <div class="filter" aria-label="Фильтр статей блога">
+    <div *ngIf="packArticles && packArticles.items && packArticles.items.length > 0"
+         class="filter" aria-label="Фильтр статей блога">
 
       <div class="filter__applied">
         <button type="button" class="filter__applied-item"
@@ -34,11 +35,14 @@
 
     </div>
 
-    <ul *ngIf="packArticles && packArticles.items && packArticles.items.length > 0" class="articles__list" aria-label="Статьи блога">
+    <ul *ngIf="packArticles && packArticles.items && packArticles.items.length > 0"
+        class="articles__list" aria-label="Статьи блога">
       <li class="articles__list-item" *ngFor="let article of packArticles.items">
         <app-article-card [article]="article"></app-article-card>
       </li>
     </ul>
+
+    <app-loader></app-loader>
 
     <div class="page-counter" aria-label="Постраничная навигация" *ngIf="pages && pages.length > 1">
 

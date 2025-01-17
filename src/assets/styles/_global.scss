@@ -1,5 +1,5 @@
 @use "helpers/index" as *;
-@use '@angular/material' as mat;// для переопределение стилей snack-bar из angular material
+@use '@angular/material' as mat;// для переопределение стилей компонентов из angular material
 
 * {
   @include custom-scrollbar();
@@ -195,9 +195,6 @@ input {
   }
 }
 
-
-
-
 // переопределение стилей для snack-bar из angular material
 :root {
   @include mat.snack-bar-overrides((
@@ -209,5 +206,11 @@ input {
   border: 2px solid var(--color-title-second);
 }
 
-
-
+// переопределение стилей для mat-dialog из angular material
+:root {
+  @include mat.dialog-overrides((
+    container-color: transparent,
+    container-max-width: 100%,
+    container-shape: none,//border-rad
+  ));
+}

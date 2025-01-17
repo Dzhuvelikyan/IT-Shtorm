@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ArticleService} from '../../../shared/services/article.service';
 import {ActivatedRoute} from '@angular/router';
 import {DefaultResponseType} from '../../../../types/default-response.type';
@@ -7,6 +7,8 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {environment} from '../../../../environments/environment';
 import {ArticleType} from '../../../../types/article/article.type';
 import {CommentsService} from '../../../shared/services/comments.service';
+import {finalize, Subject, takeUntil, tap} from 'rxjs';
+import {LoaderService} from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-article',
@@ -15,7 +17,7 @@ import {CommentsService} from '../../../shared/services/comments.service';
   styleUrl: './article.component.scss'
 })
 
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit, OnDestroy {
 
   //путь до картинок(frontend)
   pathToImage: string = environment.staticImgPath + environment.apiPath.articles + "/";
@@ -29,20 +31,29 @@ export class ArticleComponent implements OnInit {
   //массив связанных статей
   relatedArticles: ArticleType[] = [];
 
+  destroy$ = new Subject<void>();
+
   constructor(private readonly activatedRoute: ActivatedRoute,
               private readonly articleService: ArticleService,
               private readonly commentsService: CommentsService,
+              private readonly loaderService: LoaderService,
               private sanitizer: DomSanitizer,//для отображения полученного HTML из бэка
   ) {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.pipe(
+      takeUntil(this.destroy$),
+    )
+      .subscribe(params => {
 
       if (params['url']) {
 
         //получение деталей статьи
-        this.articleService.getDetailsArticle(params['url']).subscribe({
+        this.articleService.getDetailsArticle(params['url']).pipe(
+          takeUntil(this.destroy$),
+        )
+          .subscribe({
 
           next: (data: ArticleDetailsType | DefaultResponseType) => {
 
@@ -68,7 +79,8 @@ export class ArticleComponent implements OnInit {
         });
 
         //получаем связанные статьи
-        this.articleService.getRelatedArticles(params['url']).subscribe({
+        this.articleService.getRelatedArticles(params['url']).pipe(takeUntil(this.destroy$))
+          .subscribe({
 
           next: (data: ArticleType[] | DefaultResponseType) => {
 
@@ -92,7 +104,10 @@ export class ArticleComponent implements OnInit {
   }
 
 
-
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
 }
 

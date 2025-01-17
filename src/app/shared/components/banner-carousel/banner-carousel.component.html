@@ -17,7 +17,10 @@
             Весь декабрь у нас действует акция на работу копирайтера.
           </p>
 
-          <button class="banner-carousel__slide-button button" type="button">Подробнее</button>
+          <button class="banner-carousel__slide-button button" type="button"
+                  (click)="openDialog(topService.copywriting)">
+            Подробнее
+          </button>
 
         </div>
 
@@ -36,7 +39,10 @@
             <span class="banner-carousel__slide-title-other-color"> -15%!</span>
           </h3>
 
-          <button class="banner-carousel__slide-button button" type="button">Подробнее</button>
+          <button class="banner-carousel__slide-button button" type="button"
+                  (click)="openDialog(topService.promotion)">
+            Подробнее
+          </button>
 
         </div>
         <img src="assets/images/banner/banner-Image-1.png" alt="">
@@ -59,7 +65,10 @@
             Мы благодарим каждого, кто голосовал за нас!
           </p>
 
-          <button class="banner-carousel__slide-button button" type="button">Подробнее</button>
+          <button class="banner-carousel__slide-button button" type="button"
+                  (click)="openDialog(topService.advertising)">
+            Подробнее
+          </button>
 
         </div>
 
@@ -72,7 +81,7 @@
     <button (click)="carousel.prev()" class="banner-carousel__nav-btn"
             type="button"
             title="предыдущий баннер">
-      <svg width="15" height="28" viewBox="0 0 15 28" fill="none" xmlns="http://www.w3.org/2000/svg"
+      <svg width="1rem" height="1.8rem" viewBox="0 0 15 28" fill="none" xmlns="http://www.w3.org/2000/svg"
            xmlns:xlink="http://www.w3.org/1999/xlink">
         <rect x="15" width="28" height="15" transform="rotate(90 15 0)" fill="url(#pattern0_15116_355)"/>
         <defs>
@@ -87,7 +96,7 @@
     <button (click)="carousel.next()" class="banner-carousel__nav-btn"
             type="button"
             title="следующий баннер">
-      <svg width="15" height="28" viewBox="0 0 15 28" fill="none" xmlns="http://www.w3.org/2000/svg"
+      <svg width="1rem" height="1.8rem" viewBox="0 0 15 28" fill="none" xmlns="http://www.w3.org/2000/svg"
            xmlns:xlink="http://www.w3.org/1999/xlink">
         <rect y="28" width="28" height="15" transform="rotate(-90 0 28)" fill="url(#pattern0_15116_350)"/>
         <defs>

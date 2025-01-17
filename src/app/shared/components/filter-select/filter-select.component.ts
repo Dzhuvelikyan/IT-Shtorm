@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ActiveQueryParamsType} from '../../../../types/active-query-params.type';
@@ -7,6 +7,7 @@ import {CategoryService} from '../../services/category.service';
 import {DefaultResponseType} from '../../../../types/default-response.type';
 import {CategoryType} from '../../../../types/category.type';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-filter-select',
@@ -14,7 +15,7 @@ import {HttpErrorResponse} from '@angular/common/http';
   templateUrl: './filter-select.component.html',
   styleUrl: './filter-select.component.scss'
 })
-export class FilterSelectComponent implements OnInit {
+export class FilterSelectComponent implements OnInit, OnDestroy {
 
   activeQueryParams: ActiveQueryParamsType = {page: 1, categories: []};
 
@@ -22,20 +23,24 @@ export class FilterSelectComponent implements OnInit {
 
   filterOption: CategoryType[] = [];
 
+  private destroy$: Subject<void> = new Subject<void>();
+
   constructor(private readonly router: Router,
               private readonly activatedRoute: ActivatedRoute,
               private readonly categoryService: CategoryService,) {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
 
       //сохраняем query-параметры в activeQueryParams
       this.activeQueryParams = ActiveQueryParamsUtil.process(params);
 
     });
 
-    this.categoryService.getCategories().subscribe({
+    this.categoryService.getCategories().pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: (data: CategoryType[] | DefaultResponseType) => {
         if ((data as DefaultResponseType).error) {
           throw new Error((data as DefaultResponseType).message);
@@ -45,7 +50,7 @@ export class FilterSelectComponent implements OnInit {
 
       },
 
-      error: (error: HttpErrorResponse) => {
+      error: () => {
         throw new Error("Произошла ошибка при запросе категорий статей для фильтра.");
       }
 
@@ -66,7 +71,8 @@ export class FilterSelectComponent implements OnInit {
       //добавляем в query-параметры категорюю фильтра если такой там нет и удаляем если такая есть
       if (!this.activeQueryParams.categories.includes(value)) {
 
-        // this.activeQueryParams.categories.push(value);//push почему то работает не корректно(фильтр срабатывает со второго раза)
+        // this.activeQueryParams.categories.push(value);
+        // push почему то работает не корректно(фильтр срабатывает со второго раза)
         this.activeQueryParams.categories = [...this.activeQueryParams.categories, value];
 
       } else {
@@ -76,6 +82,7 @@ export class FilterSelectComponent implements OnInit {
 
     }
     this.activeQueryParams.page = 1;
+
     this.router.navigate([environment.apiPath.articles], {queryParams: this.activeQueryParams});
   }
 
@@ -85,6 +92,11 @@ export class FilterSelectComponent implements OnInit {
     if (this.filterOpened && !(event.target as HTMLElement).closest('.filter-select')) {
       this.toggleOpenFilter();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

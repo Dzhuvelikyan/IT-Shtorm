@@ -5,6 +5,7 @@ import {MainComponent} from './views/main/main.component';
 import {ViewportScroller} from '@angular/common';
 import {filter} from 'rxjs';
 import {authForwardGuard} from './core/auth/auth-forward.guard';
+import {PolicyComponent} from './views/policy/policy.component';
 
 
 const routes: Routes = [{
@@ -14,6 +15,7 @@ const routes: Routes = [{
     {path: '', component: MainComponent},
     {path: '', loadChildren: () => import("./views/auth/auth.module").then(m => m.AuthModule), canActivate: [authForwardGuard]},
     {path: '', loadChildren: () => import("./views/blog/blog.module").then(m => m.BlogModule)},
+    {path: 'policy', component: PolicyComponent},
     {path: '**', redirectTo: '/'},
   ]
 }];

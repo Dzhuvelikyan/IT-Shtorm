@@ -12,6 +12,9 @@ import {AuthService} from '../../../core/auth/auth.service';
 export class SignupComponent {
   signupForm: FormGroup;
 
+    // состояние видимости пароля
+  isPasswordVisible: boolean = false;
+
   constructor(private readonly router: Router,
               private fb: FormBuilder,
               private readonly authService: AuthService,) {
@@ -50,6 +53,10 @@ export class SignupComponent {
       },
     });
 
+  }
+
+  public togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 
 }

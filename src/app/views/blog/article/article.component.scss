@@ -172,17 +172,6 @@
     grid-area: comm;
     max-width: rem(850);
     width: 100%;
-
-    .shared-social {
-      font-weight: 500;
-      color: var(--color-title-second);
-      margin-bottom: rem(60);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      column-gap: rem(15);
-    }
-
   }
 
 }

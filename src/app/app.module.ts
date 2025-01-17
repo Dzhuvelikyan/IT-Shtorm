@@ -13,14 +13,17 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from './core/auth/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
+import {PolicyComponent} from './views/policy/policy.component';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
     HeaderComponent,
-    FooterComponent,
     MainComponent,
+    FooterComponent,
+    PolicyComponent
 
   ],
   imports: [
@@ -30,11 +33,14 @@ import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/materia
     AppRoutingModule,
     CarouselModule,
     MatSnackBarModule,
+    MatDialogModule,
+
   ],
   providers: [// Здесь можно указать глобальные сервисы
     provideAnimationsAsync(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: "45.6rem", height: "30.5rem" } }
   ],
   bootstrap: [AppComponent]
 })

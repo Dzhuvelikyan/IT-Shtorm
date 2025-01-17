@@ -46,7 +46,7 @@
 
         </ul>
 
-        <a href="tel:+74993431334" class="header__menu-phone">+7 (499) 343-13-34</a>
+        <a [href]="'tel:' + phone" class="header__menu-phone">{{phone | phoneMaskPipe}}</a>
 
         <app-profile></app-profile>
 

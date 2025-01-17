@@ -14,6 +14,10 @@ export class LoginComponent {
 
   loginForm: FormGroup;
 
+  // состояние видимости пароля
+  isPasswordVisible: boolean = false;
+
+
   constructor(private readonly router: Router,
               private fb: FormBuilder,
               private readonly authService: AuthService,
@@ -32,11 +36,28 @@ export class LoginComponent {
 
     if (this.loginForm.invalid) return;
 
+    this.processValueForm();
+
     this.authService.auth("login", this.loginForm.value)
       .subscribe(() => {
         this._snackBar.open("Вы вошли в систему");
     });
 
+  }
+
+  // обработка значений формы
+  private processValueForm(): void {
+
+    // приводим значение email к нижнему регистру
+    const emailValue = this.loginForm.get('email')?.value;
+    if (emailValue) {
+      this.loginForm.get('email')?.setValue(emailValue.toLowerCase());
+    }
+
+  };
+
+  public togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 
 }

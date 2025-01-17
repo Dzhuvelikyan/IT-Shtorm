@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticleService} from '../../../shared/services/article.service';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -8,6 +8,8 @@ import {ActiveQueryParamsType} from '../../../../types/active-query-params.type'
 import {environment} from '../../../../environments/environment';
 import {ActiveQueryParamsUtil} from '../../../shared/utils/active-query-params.util';
 import {scaleAnimation} from '../../../shared/utils/animations.util';
+import {finalize, Subject, takeUntil, tap} from 'rxjs';
+import {LoaderService} from '../../../shared/services/loader.service';
 
 @Component({
   selector: 'app-article',
@@ -16,7 +18,7 @@ import {scaleAnimation} from '../../../shared/utils/animations.util';
   styleUrl: './articles.component.scss',
   animations: [scaleAnimation],
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent implements OnInit, OnDestroy {
 
   private readonly articleApiPath: string = '';
 
@@ -29,9 +31,12 @@ export class ArticlesComponent implements OnInit {
   //кол-во страниц получаем с бэка и выводим на страницу пагинацией
   pages: number[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(private readonly activatedRoute: ActivatedRoute,
               private readonly router: Router,
-              private readonly articleService: ArticleService,) {
+              private readonly articleService: ArticleService,
+              private readonly loaderService: LoaderService,) {
 
     //путь для запроса статей
     this.articleApiPath = environment.apiPath.articles;
@@ -39,14 +44,20 @@ export class ArticlesComponent implements OnInit {
   }
 
   ngOnInit() {
-
     //получение статей для одной страницы в зависиммости от переданных query-параметров(фильтров)
-    this.activatedRoute.queryParams.subscribe((params) => {
-
+    this.activatedRoute.queryParams.pipe(
+      takeUntil(this.destroy$),
+      tap(()=> this.loaderService.show())
+    )
+      .subscribe((params) => {
       this.activeQueryParams = ActiveQueryParamsUtil.process(params);
 
       //получение статей одной страницы(если в this.activeQueryParams нет параметров получаем статьи для первой страницы без фильтров)
-      this.articleService.getArticles(this.activeQueryParams).subscribe({
+      this.articleService.getArticles(this.activeQueryParams).pipe(
+        takeUntil(this.destroy$),
+        finalize(()=> this.loaderService.hide())
+      )
+        .subscribe({
 
         next: (data: ArticlesPackType | DefaultResponseType) => {
           if ((data as DefaultResponseType).error) {
@@ -64,7 +75,6 @@ export class ArticlesComponent implements OnInit {
       });
 
     });
-
 
   }
 
@@ -109,6 +119,11 @@ export class ArticlesComponent implements OnInit {
       this.activeQueryParams.categories = this.activeQueryParams.categories.filter(category => category !== categoryFilter);
     }
     this.router.navigate([this.articleApiPath], {queryParams: this.activeQueryParams});
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

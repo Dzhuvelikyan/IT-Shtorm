@@ -1,0 +1,104 @@
+<div *ngIf="!isOrderDone" class="dialog">
+
+  <button type="button" class="dialog__close"
+          aria-label="Закрыть окно оформления услуги"
+          mat-dialog-close>
+
+    <svg width="1rem" height="1rem" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="1.93562" y1="2.6499" x2="13.9564" y2="14.6707" stroke="#A8ABA7" stroke-linecap="round"/>
+      <line x1="13.9238" y1="2.62971" x2="1.90301" y2="14.6505" stroke="#A8ABA7" stroke-linecap="round"/>
+    </svg>
+
+  </button>
+  <div class="dialog-title">
+    <span *ngIf="orderType === orderTypeEnum.consultation">Закажите бесплатную консультацию!</span>
+    <span *ngIf="orderType === orderTypeEnum.order">Заявка на услугу!</span>
+  </div>
+
+  <div class="dialog-form" [formGroup]="orderForm">
+
+    <div *ngIf="orderType === orderTypeEnum.order" class="dialog-form__group">
+      <label class="dialog-form__label">
+        <select class="select-service" formControlName="service">
+          <optgroup class="select-service__group" label="Другие услуги:">
+
+            <option class="select-service__option"
+                    [attr.aria-label]="'Услуга: ' + service"
+                    *ngFor="let service of servicesCategory"
+                    [selected]="service === dialogData.service"
+                    value="{{service}}">
+                    {{ service }}
+            </option>
+
+          </optgroup>
+        </select>
+      </label>
+    </div>
+
+    <div class="dialog-form__group">
+
+      <label class="dialog-form__label">
+
+        <input [class.invalid]="(orderForm.get('name')?.invalid &&
+               (orderForm.get('name')?.dirty || orderForm.get('name')?.touched))"
+               formControlName="name"
+               type="text"
+               placeholder="Ваше имя">
+
+      </label>
+
+      <div class="dialog-form__error-text"
+           *ngIf="orderForm.get('name')?.touched || orderForm.get('name')?.dirty && orderForm.get('name')?.invalid">
+        <span *ngIf="orderForm.get('name')?.errors?.['pattern']">
+              Имя должно содержать русские буквы.
+        </span>
+      </div>
+
+    </div>
+
+    <div class="dialog-form__group">
+
+      <label class="dialog-form__label">
+        <input [class.invalid]="(orderForm.get('phone')?.invalid &&
+               (orderForm.get('phone')?.dirty || orderForm.get('phone')?.touched))"
+               (input)="processPhoneValue($event)"
+               formControlName="phone"
+               type="text"
+               inputmode="tel"
+               placeholder="Ваш номер телефона">
+      </label>
+
+      <div class="dialog-form__error-text"
+           *ngIf="orderForm.get('phone')?.dirty || orderForm.get('phone')?.touched && orderForm.get('phone')?.invalid">
+
+        <span *ngIf="orderForm.get('phone')?.errors?.['pattern']">Введите корректный номер телефона в формате +7 999 00 00 000</span>
+
+      </div>
+
+    </div>
+
+    <button class="dialog-form__button button" type="button"
+            [disabled]="orderForm.invalid"
+            (click)="clickCreateOrder()">
+      Оставить заявку
+    </button>
+
+    <div [class.error]="isErrorResponse" class="request-error">
+    <span class="request-error-text">
+      произошла ошибка при отправке формы, попробуйте еще раз.
+    </span>
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="isOrderDone" @scaleAnimation class="dialog">
+
+  <div class="dialog-title">Спасибо за вашу заявку!</div>
+
+  <p class="dialog__thanks-text">Мы свяжемся с вами при первой же возможности.</p>
+
+  <button class="button" mat-dialog-close type="button">Окей</button>
+
+</div>

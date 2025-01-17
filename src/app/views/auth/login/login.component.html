@@ -6,32 +6,39 @@
       <div class="auth__form" [formGroup]="loginForm">
 
         <label class="auth__form-label">
-
           <input class="auth__form-input" type="email" placeholder="Электронная почта" formControlName="email"
                  [class.invalid]="(loginForm.get('email')?.invalid &&
                (loginForm.get('email')?.dirty || loginForm.get('email')?.touched))">
-
-          <div class="auth__form-error-text" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
-            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email обязателен.</span>
-            <span *ngIf="loginForm.get('email')?.errors?.['email']">Введите корректный email.</span>
-          </div>
-
         </label>
+        <div class="auth__form-error-text" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">Email обязателен.</span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">Введите корректный email.</span>
+        </div>
 
         <label class="auth__form-label">
-
-          <input class="auth__form-input" type="password" placeholder="Пароль" formControlName="password"
+          <input class="auth__form-input password" placeholder="Пароль" formControlName="password"
+                 [type]="isPasswordVisible ? 'text' : 'password'"
                  [class.invalid]="(loginForm.get('password')?.invalid &&
                (loginForm.get('password')?.dirty || loginForm.get('password')?.touched))">
-
-          <div class="auth__form-error-text"
-               *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-
-            <span *ngIf="loginForm.get('password')?.errors?.['required']">Пароль обязателен.</span>
-
-          </div>
-
+          <button type="button" class="button-eye"
+                  (click)="togglePasswordVisibility()"
+                  [attr.aria-label]="isPasswordVisible ? 'скрыть пароль' : 'показать пароль'">
+            <svg *ngIf="!isPasswordVisible" class="button-eye__hidden" xmlns="http://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 24 24" data-name="Layer 1">
+              <path
+                d="m22.242 12.702 1.502 2.235c.154.229.093.54-.136.694-.226.153-.539.094-.694-.136l-1.5-2.232c-.365.202-.779.362-1.224.489l.592 2.639c.061.27-.109.537-.378.597-.263.061-.538-.107-.597-.378l-.599-2.668c-.232.026-.458.059-.709.059-.262 0-.5-.033-.741-.062l-.58 2.668c-.058.272-.332.441-.595.383-.27-.059-.441-.325-.383-.595l.576-2.65c-.432-.126-.836-.282-1.192-.48l-1.499 2.231c-.155.231-.467.289-.694.136-.229-.154-.29-.465-.136-.694l1.502-2.235c-.797-.635-1.351-1.38-1.688-1.948-.141-.237-.062-.544.175-.685s.543-.063.685.175c.61 1.029 2.015 2.755 4.57 2.755s3.959-1.726 4.57-2.755c.142-.238.449-.315.685-.175.238.141.316.448.175.685-.337.568-.891 1.312-1.688 1.947zm-11.487-2.632c-.237-.14-.543-.063-.685.175-.61 1.029-2.016 2.755-4.57 2.755s-3.96-1.726-4.57-2.755c-.141-.238-.449-.316-.685-.175-.238.141-.316.448-.175.685.337.568.891 1.313 1.688 1.948l-1.502 2.235c-.154.229-.093.54.136.694.226.153.539.094.694-.136l1.499-2.231c.356.198.76.354 1.192.48l-.576 2.65c-.059.27.113.536.383.595.263.059.537-.111.595-.383l.58-2.668c.242.028.479.062.741.062.25 0 .477-.033.709-.059l.599 2.668c.059.272.335.439.597.378.27-.061.439-.328.378-.597l-.592-2.638c.444-.127.859-.286 1.224-.489l1.5 2.232c.155.231.467.289.694.136.229-.154.29-.465.136-.694l-1.502-2.235c.797-.635 1.351-1.379 1.688-1.947.141-.237.062-.544-.175-.685z"/>
+            </svg>
+            <svg *ngIf="isPasswordVisible" class="button-eye__visible" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+              <path
+                d="m17.75,0c-2.615,0-4.805,2.936-5.75,7.22C11.055,2.936,8.865,0,6.25,0,2.745,0,0,5.271,0,12s2.745,12,6.25,12c2.615,0,4.805-2.936,5.75-7.221.945,4.284,3.135,7.221,5.75,7.221,3.505,0,6.25-5.271,6.25-12S21.255,0,17.75,0ZM6.25,23c-2.227,0-4.178-3.09-4.923-7.288.428.765,1.236,1.288,2.173,1.288,1.378,0,2.5-1.121,2.5-2.5s-1.122-2.5-2.5-2.5c-1.164,0-2.137.804-2.414,1.883-.053-.615-.086-1.242-.086-1.883C1,6.037,3.404,1,6.25,1s5.25,5.037,5.25,11-2.404,11-5.25,11ZM2,14.5c0-.827.673-1.5,1.5-1.5s1.5.673,1.5,1.5-.673,1.5-1.5,1.5-1.5-.673-1.5-1.5Zm15.75,8.5c-2.091,0-3.94-2.725-4.776-6.534.424.329.949.534,1.526.534,1.378,0,2.5-1.121,2.5-2.5s-1.122-2.5-2.5-2.5c-.807,0-1.518.39-1.975.985-.015-.326-.025-.653-.025-.985,0-5.963,2.404-11,5.25-11s5.25,5.037,5.25,11-2.404,11-5.25,11Zm-4.75-8.5c0-.827.673-1.5,1.5-1.5s1.5.673,1.5,1.5-.673,1.5-1.5,1.5-1.5-.673-1.5-1.5Z"/>
+            </svg>
+          </button>
         </label>
+        <div class="auth__form-error-text"
+             *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">Пароль обязателен.</span>
+
+        </div>
 
         <label class="auth__form-checkbox-label">
           <input class="auth__form-checkbox-input" type="checkbox" formControlName="rememberMe">

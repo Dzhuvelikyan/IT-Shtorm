@@ -13,5 +13,4 @@ export class ServicesService {
   public getServices(): Observable<ServiceType[] | []> {
     return this.http.get<ServiceType[] | []>("assets/data-base/services.json");
   }
-
 }

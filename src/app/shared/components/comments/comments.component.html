@@ -38,11 +38,16 @@
   <ul *ngIf="comments.comments && comments.comments.length > 0" class="comments__list">
 
     <li *ngFor="let comment of comments.comments" class="comments__list-item">
-      <app-comment-card [comment]="comment"></app-comment-card>
+      <app-comment-card (userAppliedAction)="appliedUserActionComment()" [comment]="comment"></app-comment-card>
     </li>
 
     <li class="comments__list-button">
-      <button type="button">Загрузить ещё комментарии</button>
+      <button *ngIf="comments.allCount > quantityCommentDefault && comments.allCount > comments.comments.length"
+              (click)="loadMoreCommentsClick()">Загрузить ещё комментарии
+      </button>
+      <div class="comments__list-loader">
+        <app-loader></app-loader>
+      </div>
     </li>
   </ul>
 

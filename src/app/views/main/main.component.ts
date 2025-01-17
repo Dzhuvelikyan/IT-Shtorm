@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ServicesService} from '../../shared/services/services.service';
 import {ServiceType} from '../../../types/service.type';
 import {ArticleService} from '../../shared/services/article.service';
@@ -8,6 +8,7 @@ import {ReviewType} from '../../../types/review.type';
 import {ReviewsService} from '../../shared/services/review.service';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {environment} from '../../../environments/environment';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -15,7 +16,7 @@ import {environment} from '../../../environments/environment';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
 
   protected readonly environment = environment;
 
@@ -55,21 +56,26 @@ export class MainComponent implements OnInit {
     nav: false,
   }
 
+  private destroy$ = new Subject<void>();
+
   constructor(private readonly servicesService: ServicesService,
               private readonly articleService: ArticleService,
-              private readonly reviewService: ReviewsService,) {
+              private readonly reviewService: ReviewsService) {
   }
 
   ngOnInit() {
 
-    this.servicesService.getServices().subscribe((data: ServiceType[]) => {
+    this.servicesService.getServices().pipe(takeUntil(this.destroy$))
+      .subscribe((data: ServiceType[]) => {
         this.services = data;
     });
 
-    this.articleService.getPopularArticles().subscribe({
+    this.articleService.getPopularArticles().pipe(takeUntil(this.destroy$))
+      .subscribe({
 
       next: (data: ArticleType[] | DefaultResponseType) => {
         this.articles = data as ArticleType[];
+
       },
 
       error: () => {
@@ -78,10 +84,18 @@ export class MainComponent implements OnInit {
 
     });
 
-    this.reviewService.getReviews().subscribe((data: ReviewType[]) => {
+    this.reviewService.getReviews().pipe(takeUntil(this.destroy$))
+      .subscribe((data: ReviewType[]) => {
       this.reviews = data;
     });
 
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+
 }
+

@@ -44,7 +44,7 @@
 
   &__list {
     @include flex-direction-column-gap(40);
-    margin-block: rem(60);
+    margin-top: rem(60);
 
     &-item {
 
@@ -59,6 +59,11 @@
         @include hover-menu-link();
       }
     }
+
+    &-loader {
+      width: rem(200);
+    }
+
   }
 
 }

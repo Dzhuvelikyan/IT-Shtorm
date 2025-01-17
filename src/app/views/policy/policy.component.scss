@@ -1,0 +1,23 @@
+@use "../../../assets/styles/helpers/index" as *;
+
+.policy {
+  padding-block: var(--view-padding-y);
+  &__title {
+    @include title-style();
+    margin-bottom: rem(40);
+    text-align: center;
+  }
+
+  &__text {
+    font-size: rem(20);
+    hyphens: auto;
+
+    p {
+      font {
+        display: contents;
+      };
+    }
+
+  }
+
+}

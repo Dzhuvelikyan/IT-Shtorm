@@ -1,12 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {CommentsService} from '../../services/comments.service';
-import {CommentsPackType} from '../../../../types/article/comment.type';
+import {CommentsPackType} from '../../../../types/comment/comment.type';
 import {DefaultResponseType} from '../../../../types/default-response.type';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpErrorResponse} from '@angular/common/http';
-import {finalize} from 'rxjs';
+import {finalize, Subject, takeUntil} from 'rxjs';
 import {AuthService} from '../../../core/auth/auth.service';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {LoaderService} from '../../services/loader.service';
 
 @Component({
   selector: 'app-comments',
@@ -14,28 +15,56 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss'
 })
-export class CommentsComponent implements OnInit{
+export class CommentsComponent implements OnChanges, OnInit, OnDestroy {
 
-  //получаем id статьи
-  @Input()articleId: string = '';
+  //получаем id статьи(от родительского компонента)
+  @Input() articleId: string = '';
 
-  private quantityComment: number = 3;
+  public commentForm!: FormGroup;
 
   //комментрарии статьи
-  comments: CommentsPackType = {  allCount: 0, comments: []};
+  public comments: CommentsPackType = {allCount: 0, comments: []};
 
-  // кол-во получаемых комментариев
-  commentForm!: FormGroup;
+  // первоначальное кол-во получаемых комментариев
+  public quantityCommentDefault: number = 3;
+
+  // максимальное количество комментов подгружаемых из бэкенда за раз
+  public loadedQuantityComment: number = 10;
+
+  //отправляемое число на бэк должно быть отрицательное. пример: отправляем -7, получаем 3 последних комментария
+  private currentQuantity: number = 0 - (this.loadedQuantityComment - this.quantityCommentDefault);
+
+  //query-параметры для запроса за коментариями(offset: вычисляемое колво комментариев, article: id статьи)
+  private params: { offset: number, article: string } = {offset: 0, article: "",}
+
+  destroy$: Subject<void> = new Subject<void>();
 
   constructor(private commentsService: CommentsService,
               private readonly fb: FormBuilder,
               readonly authService: AuthService,
-              private _snackBar: MatSnackBar,) {
+              private _snackBar: MatSnackBar,
+              private readonly loaderService: LoaderService,) {
   }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['articleId']) {
+
+      //отрисовываем компонент с комментариями
+      this.renderCommentsComponent();
+
+    }
+  }
+
+  ngOnInit(): void {
 
     this.initCommentForm(this.articleId);
+
+  }
+
+  // отрисовка компонента при изменениях articleId
+  private renderCommentsComponent(): void {
+    //формируем query-параметры для запроса за коментариями
+    this.params = {offset: this.currentQuantity, article: this.articleId,}
 
     this.loadComments();
 
@@ -51,11 +80,10 @@ export class CommentsComponent implements OnInit{
 
   // Запрос на получение коментариев для статьи.
   private loadComments(): void {
-
-    //query-параметры для запроса за коментариями(offset: -колво комментариев, article: -id статьи получаемых комментов)
-    const params: {offset: number, article: string} = {offset: this.quantityComment, article: this.articleId, }
-
-    this.commentsService.getComments(params).subscribe({
+    this.commentsService.getComments(this.params).pipe(
+      takeUntil(this.destroy$),
+      finalize(()=> this.loaderService.hide()))
+      .subscribe({
 
       next: (dataComments: CommentsPackType | DefaultResponseType) => {
         if ((dataComments as DefaultResponseType).error) {
@@ -63,9 +91,6 @@ export class CommentsComponent implements OnInit{
         }
 
         this.comments = dataComments as CommentsPackType;
-
-        console.log(this.comments);
-
       },
 
       error: () => {
@@ -73,6 +98,7 @@ export class CommentsComponent implements OnInit{
       }
 
     });
+
   }
 
   // Запрос на добавление нового комментария к статье.
@@ -80,17 +106,16 @@ export class CommentsComponent implements OnInit{
     if (this.commentForm.invalid) return;
 
     this.commentsService.createComment(this.commentForm.value).pipe(
-
-      finalize(()=> {
+      takeUntil(this.destroy$),
+      finalize(() => {
         //очищаем поле комментария после отправки запроса
         this.commentForm.get('text')?.setValue('');
       })
-
     ).subscribe({
 
       next: (DefaultResponse: DefaultResponseType) => {
 
-        if(DefaultResponse.error) {
+        if (DefaultResponse.error) {
           this._snackBar.open("Комментарий не добавлен, из за ошибка авторизации.");
           throw new Error(DefaultResponse.message);
         }
@@ -110,6 +135,32 @@ export class CommentsComponent implements OnInit{
 
     });
 
+  }
+
+  // загрузить еще комменты по клику
+  public loadMoreCommentsClick(): void {
+
+    this.loaderService.show();
+
+    //формируем query-параметры для запроса
+    this.params = {offset: 0, article: this.articleId,}
+
+    // загружаем комменты и отключaем лоадера
+    this.loadComments()
+
+  }
+
+  // действие на реакцию пользователя к комментарию в дочернем компоненте "comment-card"
+  public appliedUserActionComment(): void {
+
+    //отрисовываем компонент с комментариями
+     this.loadComments();
+
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete();
   }
 
 }

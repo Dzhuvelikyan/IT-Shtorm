@@ -1,5 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {StateClasses} from '../../../../enum/state-classes.enum';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,8 @@ import {StateClasses} from '../../../../enum/state-classes.enum';
 export class HeaderComponent {
   @ViewChild('burgerButton', {static: true}) burgerButton!: ElementRef;
   @ViewChild('headerOverlay', {static: true}) headerOverlay!: ElementRef;
+
+  phone: string = environment.phone;
 
   //CSS классы которые будем добавлять по ситуации
   stateClasses = StateClasses;

@@ -109,7 +109,15 @@ export class AuthService {
     const tokens = this.getTokens();
     if (tokens && tokens.refreshToken) {
 
-      return this.http.post<DefaultResponseType>(environment.api + "/logout", {refreshToken: tokens.refreshToken});
+      return this.http.post<DefaultResponseType>(environment.api + "/logout", {refreshToken: tokens.refreshToken}).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.removeTokens();
+          this.userId = null;
+          console.error('Ошибка при выходе из системы: ', error.error.message);
+          this._snackBar.open("Вы вышли из системы с ошибкой");
+          return throwError(() => error);//передаем ошибку подписчику
+        })
+      );
 
     } else {
       //если refreshToken не найден то все рвно подчистим токены разлогиним пользователя
