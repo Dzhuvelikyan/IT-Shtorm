@@ -27,6 +27,7 @@ export class HeaderComponent {
     document.documentElement.classList.toggle(this.stateClasses.isLock);
   }
 
+  // клик по элемендам с атрибутом data-menu-link закрывает бургер меню(мобильное меню)
   public closeBurgerMenu(event: MouseEvent): void {
 
     const target = event.target as HTMLElement;

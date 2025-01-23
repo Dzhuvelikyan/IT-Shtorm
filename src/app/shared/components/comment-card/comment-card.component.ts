@@ -1,13 +1,11 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommentType} from '../../../../types/comment/comment.type';
 import {CommentsService} from '../../services/comments.service';
 import {DefaultResponseType} from '../../../../types/default-response.type';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommentApplyActionEnum} from '../../../../enum/comment-apply-action.enum';
-import {CommentActionUserType} from '../../../../types/comment/comment-action-user.type';
 import {Subject, takeUntil, tap} from 'rxjs';
 import {AuthService} from '../../../core/auth/auth.service';
-import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-comment-card',
@@ -20,17 +18,7 @@ export class CommentCardComponent implements OnInit, OnDestroy {
   // данные для карточки комментария полученные от родителя
   @Input() comment: CommentType;
 
-  //оповещаем родителя о том что пользователь отреагировал на комент, чтобы отрисовать комменты с примененной реакцией
-  @Output() userAppliedAction = new EventEmitter<void>();
-  private handleAppliedAction(): void {
-    // Уведомляем родителя о событии(реакция на коммент)
-    this.userAppliedAction.emit();
-  }
-
   public commentActionEnum = CommentApplyActionEnum;
-
-  // действия пользователя для комментария
-  public actionUserComment: CommentActionUserType = {} as CommentActionUserType;
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -42,19 +30,19 @@ export class CommentCardComponent implements OnInit, OnDestroy {
       id: "0",
       text: "Интересно, это было экспертное мнение или личный опыт автора?",
       date: "21.01.2023 03:22",
-      likesCount: 12,
-      dislikesCount: 5,
+      likesCount: 0,
+      dislikesCount: 0,
       user: {
         id: "0",
         name: "Влад"
-      }
+      },
+      userAction: ""
     }
 
   }
 
   ngOnInit(): void {
 
-    this.getActionUserComment();
 
   }
 
@@ -76,23 +64,23 @@ export class CommentCardComponent implements OnInit, OnDestroy {
       })
     ).subscribe({
 
-        next: (data: DefaultResponseType): void => {
-          if (data.error) {
-            this._snackBar.open(data.message);
-          }
+      next: (data: DefaultResponseType): void => {
+        if (data.error) {
+          this._snackBar.open(data.message);
+        }
 
-          this._snackBar.open(message);
+        // обрабатываем действия порльзователя
+        this.processUserActions(action);
 
-          //оповещаем родителя для перерисовки
-          this.handleAppliedAction();
-        },
+        this._snackBar.open(message);
+      },
 
-        error: (error) => {
-          console.error(error.error.message);
-          this._snackBar.open("Жалоба уже отправлена.");
-        },
+      error: (error) => {
+        console.error(error.error.message);
+        this._snackBar.open("Жалоба уже отправлена.");
+      },
 
-      });
+    });
 
   }
 
@@ -120,26 +108,38 @@ export class CommentCardComponent implements OnInit, OnDestroy {
 
   }
 
-  // вызывает запрос на получение реакции пользователя на комментарий.
-  private getActionUserComment(): void {
-    if (!this.authService.getLoggedIn()) return;
+  // обработка действий пользователя на комментарий
+  private processUserActions(action: CommentApplyActionEnum): void {
 
-    // Запрос на получение реакции пользователя на комментарий.
-    this.commentService.getActionUserComment(this.comment.id).pipe(takeUntil(this.destroy$))
-      .subscribe({
-      next: (data: CommentActionUserType[] | DefaultResponseType) => {
-        if ((data as DefaultResponseType).error) {
-          throw new Error((data as DefaultResponseType).message)
+    // если реакция "жалоба" не обрабатываем действия
+    if (action === CommentApplyActionEnum.violate) return
+
+    if (!this.comment.userAction) {
+      // Если пользователь еще не взаимодействовал
+      if (action === CommentApplyActionEnum.like) this.comment.likesCount++;
+      if (action === CommentApplyActionEnum.dislike) this.comment.dislikesCount++;
+      this.comment.userAction = action;
+    } else {
+      if (action !== this.comment.userAction) {
+        // если пользователь меняет действие
+        if (action === CommentApplyActionEnum.like) {
+          this.comment.likesCount++;
+          this.comment.dislikesCount--;
+        } else if (action === CommentApplyActionEnum.dislike) {
+          this.comment.likesCount--;
+          this.comment.dislikesCount++;
         }
-        this.actionUserComment = (data as CommentActionUserType[])[0];
-      },
-
-      error: (error: HttpErrorResponse) => {
-        throw new Error(error.error.message);
+        this.comment.userAction = action;
+      } else {
+        //если пользователь отменяет действие
+        if (action === CommentApplyActionEnum.like) {
+          this.comment.likesCount--;
+        } else if (action === CommentApplyActionEnum.dislike) {
+          this.comment.dislikesCount--;
+        }
+        this.comment.userAction = ""; //сбрасываем действие (комент без реакции)
       }
-
-    });
-
+    }
   }
 
   ngOnDestroy() {

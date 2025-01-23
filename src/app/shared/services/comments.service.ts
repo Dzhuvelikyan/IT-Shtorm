@@ -18,7 +18,7 @@ export class CommentsService {
 
 
   // Запрос на загрузку комментариев к статье. Передаем количество комментариев, которые надо получить, а также id статьи
-  public getComments(params: {offset: number, article: string}): Observable<CommentsPackType | DefaultResponseType> {
+  public getComments(params: {offset?: number, article: string}): Observable<CommentsPackType | DefaultResponseType> {
     const httpParams = new HttpParams({ fromObject: params });
     return this.http.get<CommentsPackType | DefaultResponseType>(this.commentsPath, {params: httpParams});
   }
@@ -37,11 +37,17 @@ export class CommentsService {
   }
 
 
-  // Запрос на получение реакции пользователя на комментария.
+  // Запрос на получение реакции пользователя на комментарий.
   // Необходимо передавать авторизационный заголовок с access токеном.
   // В ответ получаем DefaultResponse в случае неудачи, либо же массив действий пользователя (кроме violate)
   public getActionUserComment(commentId: string): Observable<CommentActionUserType[] | DefaultResponseType> {
-    return this.http.get<DefaultResponseType>(`${this.commentsPath}/${commentId}/actions`);
+    return this.http.get<CommentActionUserType[] | DefaultResponseType>(`${this.commentsPath}/${commentId}/actions`);
+  }
+
+
+  // Запрос на получение действий пользователя для всех комментариев в рамках одной статьи. (кроме реакции violate - жалоба)
+  public getActionUserAllComment(articleId: string): Observable<CommentActionUserType[] | DefaultResponseType> {
+    return this.http.get<CommentActionUserType[] | DefaultResponseType>(`${this.commentsPath}/article-comment-actions?articleId=${articleId}`);
   }
 
 }

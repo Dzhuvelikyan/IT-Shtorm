@@ -20,18 +20,20 @@ import {LoaderService} from '../../../shared/services/loader.service';
 export class ArticleComponent implements OnInit, OnDestroy {
 
   //путь до картинок(frontend)
-  pathToImage: string = environment.staticImgPath + environment.apiPath.articles + "/";
+  public pathToImage: string = environment.staticImgPath + environment.apiPath.articles + "/";
 
   //для безопасного отображения html-контента полученного с сервера в component.html
-  sanitizedHtml: SafeHtml = `<h3>Контент от сервера</h3>`;
+  public sanitizedHtml: SafeHtml = `<h3>Контент от сервера</h3>`;
 
   //детали статьи
-  detailsArticle: ArticleDetailsType = {} as ArticleDetailsType;
+  public detailsArticle: ArticleDetailsType = {} as ArticleDetailsType;
 
   //массив связанных статей
-  relatedArticles: ArticleType[] = [];
+  public relatedArticles: ArticleType[] = [];
 
-  destroy$ = new Subject<void>();
+  private paramsArticleUrl: string = '';
+
+  private destroy$ = new Subject<void>();
 
   constructor(private readonly activatedRoute: ActivatedRoute,
               private readonly articleService: ArticleService,
@@ -49,37 +51,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
       if (params['url']) {
 
-        //получение деталей статьи
-        this.articleService.getDetailsArticle(params['url']).pipe(
-          takeUntil(this.destroy$),
-        )
-          .subscribe({
+        this.paramsArticleUrl = params['url'];
 
-          next: (data: ArticleDetailsType | DefaultResponseType) => {
-
-            if ((data as DefaultResponseType).error) {
-              throw new Error((data as DefaultResponseType).message);
-            }
-
-            // детали статьи
-            this.detailsArticle = data as ArticleDetailsType;
-
-            // отображаем полученный html(this.detailsArticle.text) на странице (безопасный подход)
-            this.sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(this.detailsArticle.text);
-
-            // получаем комменты статьи
-
-
-          },
-
-          error: () => {
-            throw new Error("Из-за ошибки в запросе на сервер не удалось получить детали статьи.");
-          }
-
-        });
+        this.loadArticle();
 
         //получаем связанные статьи
-        this.articleService.getRelatedArticles(params['url']).pipe(takeUntil(this.destroy$))
+        this.articleService.getRelatedArticles(this.paramsArticleUrl).pipe(takeUntil(this.destroy$))
           .subscribe({
 
           next: (data: ArticleType[] | DefaultResponseType) => {
@@ -103,6 +80,38 @@ export class ArticleComponent implements OnInit, OnDestroy {
     });
   }
 
+  //получение деталей статьи
+  public loadArticle(): void {
+
+    this.articleService.getDetailsArticle(this.paramsArticleUrl).pipe(
+      takeUntil(this.destroy$),
+    )
+      .subscribe({
+
+        next: (data: ArticleDetailsType | DefaultResponseType) => {
+
+          if ((data as DefaultResponseType).error) {
+            throw new Error((data as DefaultResponseType).message);
+          }
+
+          // детали статьи
+          this.detailsArticle = data as ArticleDetailsType;
+
+          // отображаем полученный html(this.detailsArticle.text) на странице (безопасный подход)
+          this.sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(this.detailsArticle.text);
+
+          // получаем комменты статьи
+
+
+        },
+
+        error: () => {
+          throw new Error("Из-за ошибки в запросе на сервер не удалось получить детали статьи.");
+        }
+
+      });
+
+  }
 
   ngOnDestroy() {
     this.destroy$.next();

@@ -18,6 +18,7 @@ import {MatButton} from '@angular/material/button';
 import {PhoneMaskPipe} from './pipes/phone-mask.pipe';
 import {LoaderComponent} from './components/loader/loader.component';
 import {ShareToSocialComponent} from './components/share-to-social/share-to-social.component';
+import {InputPhoneMaskDirective} from './directives/input-phone-mask.directive';
 
 
 
@@ -35,7 +36,9 @@ import {ShareToSocialComponent} from './components/share-to-social/share-to-soci
     ShareToSocialComponent,
 
     ConvertingFilterNamesPipe,
-    PhoneMaskPipe
+    PhoneMaskPipe,
+
+    InputPhoneMaskDirective
   ],
     imports: [
         CommonModule,
@@ -59,7 +62,9 @@ import {ShareToSocialComponent} from './components/share-to-social/share-to-soci
     ShareToSocialComponent,
 
     ConvertingFilterNamesPipe,
-    PhoneMaskPipe
+    PhoneMaskPipe,
+
+    InputPhoneMaskDirective
   ]
 })
 export class SharedModule { }

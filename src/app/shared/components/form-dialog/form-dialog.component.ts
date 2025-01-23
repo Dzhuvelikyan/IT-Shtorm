@@ -81,7 +81,7 @@ export class FormDialogComponent implements OnInit {
 
       phone: ['', [
         Validators.required,
-        Validators.pattern(/^\+?[0-9\s\-\(\)]{7,15}$/)
+        Validators.pattern(/^\+7[0-9\s\-\(\)]{7,18}$/)//18 символов это длинна номера телефона с маской(начало с +7)
       ]],
 
       type: [this.orderType],
@@ -96,8 +96,14 @@ export class FormDialogComponent implements OnInit {
   // отправка запроса
   public clickCreateOrder(): void {
 
-    if (this.orderForm.invalid) return;
-    console.log(this.orderForm.value)
+    if (this.orderForm.invalid) {
+      this._snackBar.open("Не корректные данные!")
+      return
+    }
+
+    // ощищаем номер телефона от маски
+    this.processPhoneValue(this.orderForm.get("phone")?.value);
+
     this.orderService.createOrder(this.orderForm.value).subscribe({
 
       next: (DefaultResponse: DefaultResponseType) => {
@@ -130,29 +136,14 @@ export class FormDialogComponent implements OnInit {
     }, 2500)
   }
 
-  // попробывать в будующем переделать  в директиву
-  public processPhoneValue(event: Event): void {
-    const input = event.target as HTMLInputElement;
-
-    // Удаляем все символы, кроме цифр и "+"
-    let value = input.value.replace(/[^0-9+]/g, '');
-
-    // Удаляем лишние "+" (оставляем только один, если он есть, и только в начале)
-    value = value.replace(/(?!^)\+/g, '');
-
-    // форматируем номер что-бы он начинался с "+7"
-    if (value.match(/^9/)) {
-      value = '+7' + value;
-    } else if (value.match(/^7/)) {
-      value = '+' + value;
-    } else if (value.match(/^8/)) {
-      value = value.replace(/^8/, '+7')
-    }
-
-    // Обновляем значение как в input, так и в форме
-    input.value = value;
-    this.orderForm.get('phone')?.setValue(value);
+  // преобразуем номер телефона с маской в валидное значение и вносим в форму
+  public processPhoneValue(value: string): void {
+    // Удаляем все символы, кроме цифр
+    value = value.replace(/[^0-9]/g, '');
+    // Обновляем значение в форме с добавлением "+" вначале номера
+    this.orderForm.get('phone')?.setValue(`+${value}`);
   }
+
 
 }
 

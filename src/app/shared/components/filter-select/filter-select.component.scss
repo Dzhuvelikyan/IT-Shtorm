@@ -9,7 +9,7 @@
 
   position: relative;
   z-index: 10;
-  width: rem(257);
+  width: var(--filter-content-width);
   font-size: rem(16);
   transition: width var(--transition-base-time) ease;
 

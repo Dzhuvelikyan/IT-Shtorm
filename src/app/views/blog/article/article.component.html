@@ -44,7 +44,12 @@
                            [articleTitle]="detailsArticle.title">
       </app-share-to-social>
 
-      <app-comments *ngIf="detailsArticle?.id" [articleId]=detailsArticle.id></app-comments>
+      <app-comments *ngIf="detailsArticle?.id"
+                    [articleId] = detailsArticle.id
+                    [comments] = detailsArticle.comments
+                    [allCountComments] = detailsArticle.commentsCount
+      (userAddComment) = "loadArticle()">
+      </app-comments>
 
     </div>
 

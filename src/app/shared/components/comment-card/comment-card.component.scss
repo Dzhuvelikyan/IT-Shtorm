@@ -56,6 +56,19 @@
 
       &.is-active {
         color: var(--color-title-second);
+        animation: down 1000ms ease alternate;
+        @keyframes down {
+          0%, 100% {
+            scale: 1;
+          }
+          50% {
+            scale: 0.9;
+          }
+          70% {
+            scale: 1.1;
+          }
+        }
+
       }
 
     }

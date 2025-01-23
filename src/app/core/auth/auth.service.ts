@@ -128,8 +128,12 @@ export class AuthService {
     }
   }
 
-  public refresh(body: AuthUserType | DefaultResponseType): Observable<AuthTokensType | DefaultResponseType> {
-    return this.http.post<AuthTokensType | DefaultResponseType>(environment.api + "/refresh", body);
+  public refresh(): Observable<AuthTokensType | DefaultResponseType> {
+    const tokens = this.getTokens();
+    if (tokens && tokens.refreshToken) {
+      return this.http.post<AuthTokensType | DefaultResponseType>(environment.api + "/refresh", {refreshToken: tokens.refreshToken});
+    }
+    throw throwError(()=> "запрос refreshTokens: токены не найдены");
   }
 
 }

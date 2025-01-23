@@ -14,7 +14,7 @@
     </div>
     <div class="card__user-info">
       <div class="card__user-name">{{comment.user.name}}</div>
-      <div class="card__user-date">{{comment.date}}</div>
+      <div class="card__user-date">{{comment.date | date: 'dd.MM.yyyy HH:mm'}}</div>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
   <div (click)="applyActionClick($event)" class="card__actions">
 
     <button type="button" class="card__actions-item like" aria-label="Нравится"
-            [class.is-active] = "actionUserComment && actionUserComment.action === commentActionEnum.like"
+            [class.is-active] = "comment.userAction === commentActionEnum.like"
             [attr.data-action-type] = commentActionEnum.like>
       <span class="card__actions-item-counter">{{comment.likesCount}}</span>
 
@@ -36,7 +36,7 @@
     </button>
 
     <button type="button" class="card__actions-item dislike" aria-label="Не нравится"
-            [class.is-active] = "actionUserComment && actionUserComment.action === commentActionEnum.dislike"
+            [class.is-active] = "comment.userAction === commentActionEnum.dislike"
             [attr.data-action-type] = commentActionEnum.dislike>
       <span class="card__actions-item-counter">{{comment.dislikesCount}}</span>
       <div class="card__actions-item-icon">

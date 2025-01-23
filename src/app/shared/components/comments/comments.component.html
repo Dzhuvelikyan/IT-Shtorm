@@ -1,8 +1,8 @@
 <section class="comments">
 
   <p class="comments__title">
-    <ng-template [ngIf]=comments.allCount>Комментарии к статье</ng-template>
-    <ng-template [ngIf]=!comments.allCount>Комментариев пока нет</ng-template>
+    <ng-template [ngIf]=allCountComments>Комментарии к статье</ng-template>
+    <ng-template [ngIf]=!allCountComments>Комментариев пока нет</ng-template>
 
     <ng-template [ngIf]=!authService.getLoggedIn()>
       <p class="comments__title-sub-title">Чтобы оставлять комментарии,
@@ -13,7 +13,7 @@
 
   </p>
 
-  <p *ngIf=!comments.allCount>Будьте первым, кто оставит свой комментарий к статье!</p>
+  <p *ngIf=!allCountComments>Будьте первым, кто оставит свой комментарий к статье!</p>
 
   <div class="comments__form"
        *ngIf=authService.getLoggedIn()
@@ -34,16 +34,15 @@
 
   </div>
 
-  <!-- блок с полученными комментариями -->
-  <ul *ngIf="comments.comments && comments.comments.length > 0" class="comments__list">
+  <ul *ngIf="comments && comments.length > 0" class="comments__list">
 
-    <li *ngFor="let comment of comments.comments" class="comments__list-item">
-      <app-comment-card (userAppliedAction)="appliedUserActionComment()" [comment]="comment"></app-comment-card>
+    <li *ngFor="let comment of comments" class="comments__list-item">
+      <app-comment-card [comment]="comment"></app-comment-card>
     </li>
 
     <li class="comments__list-button">
-      <button *ngIf="comments.allCount > quantityCommentDefault && comments.allCount > comments.comments.length"
-              (click)="loadMoreCommentsClick()">Загрузить ещё комментарии
+      <button *ngIf="showBtnMoreComments()"
+              (click)="loadMoreComments()">Загрузить ещё комментарии
       </button>
       <div class="comments__list-loader">
         <app-loader></app-loader>
